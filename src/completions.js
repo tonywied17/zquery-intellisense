@@ -191,6 +191,24 @@ const htmlDirectiveProvider = {
       });
     }
 
+    // :attr shorthand binding (z-bind shorthand)
+    if (/\s:[\w]*$/.test(prefix) && insideTag) {
+      const common = ['href', 'src', 'alt', 'title', 'disabled', 'hidden', 'id', 'class', 'style', 'value', 'placeholder', 'type', 'name', 'action', 'method', 'target', 'aria-label', 'role'];
+      return common.map((attr, i) => {
+        const item = new vscode.CompletionItem(':' + attr, vscode.CompletionItemKind.Property);
+        item.detail = `zQuery: Bind :${attr}`;
+        item.documentation = new vscode.MarkdownString(`Dynamic attribute binding shorthand for \`z-bind:${attr}\`.\n\n\`\`\`html\n<element :${attr}="expression">\n\`\`\``);
+        item.documentation.isTrusted = true;
+        item.insertText = new vscode.SnippetString(`:${attr}="\$1"`);
+        item.sortText = String(i).padStart(2, '0');
+        const colonPos = prefix.lastIndexOf(':');
+        if (colonPos >= 0) {
+          item.range = new vscode.Range(position.line, colonPos, position.line, position.character);
+        }
+        return item;
+      });
+    }
+
     return undefined;
   },
 };
@@ -212,7 +230,7 @@ function registerCompletionProviders(context) {
     vscode.languages.registerCompletionItemProvider(JS_SELECTOR, jsDotProvider, '.'),
     vscode.languages.registerCompletionItemProvider(JS_SELECTOR, jsCollectionProvider, '.'),
     vscode.languages.registerCompletionItemProvider(JS_SELECTOR, jsComponentKeyProvider),
-    vscode.languages.registerCompletionItemProvider(HTML_SELECTOR, htmlDirectiveProvider, '@', '-'),
+    vscode.languages.registerCompletionItemProvider(HTML_SELECTOR, htmlDirectiveProvider, '@', '-', ':'),
   );
 }
 

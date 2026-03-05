@@ -736,6 +736,94 @@ const collectionMethods = [
 // -- HTML directives (z-*) --------------------------------------------------
 
 const zDirectives = [
+  // -- Conditional Rendering -----------------------------------------------
+  {
+    name: 'z-if',
+    detail: 'Conditional Rendering',
+    documentation:
+      'Conditionally render an element based on a state expression. The element is removed from the DOM when the expression is falsy.\n\n' +
+      '```html\n<div z-if="isLoggedIn">Welcome back!</div>\n<div z-if="items.length > 0">Has items</div>\n<div z-if="status === \'ok\'">Success</div>\n```',
+    insertText: 'z-if="$1"',
+  },
+  {
+    name: 'z-else-if',
+    detail: 'Else-If Branch',
+    documentation:
+      'Must follow a `z-if` or another `z-else-if` element. Renders when the preceding conditions are falsy and this expression is truthy.\n\n' +
+      '```html\n<div z-if="status === \'ok\'">Success</div>\n<div z-else-if="status === \'loading\'">Loading...</div>\n<div z-else>Error</div>\n```',
+    insertText: 'z-else-if="$1"',
+  },
+  {
+    name: 'z-else',
+    detail: 'Else Branch',
+    documentation:
+      'Must follow a `z-if` or `z-else-if` element. Renders when all preceding conditions are falsy.\n\n' +
+      '```html\n<div z-if="items.length">Has items</div>\n<div z-else>No items found</div>\n```',
+    insertText: 'z-else',
+  },
+  // -- List Rendering ------------------------------------------------------
+  {
+    name: 'z-for',
+    detail: 'List Rendering',
+    documentation:
+      'Repeat an element for each item in an array. Exposes the loop variable and `$index` inside `{{…}}` expressions.\n\n' +
+      '```html\n<li z-for="item in items">\n  {{$index}}: {{item.name}}\n</li>\n```\n\n' +
+      'Nested loops are supported. Each `z-for` creates its own scope.',
+    insertText: 'z-for="$1 in $2"',
+  },
+  // -- Visibility ----------------------------------------------------------
+  {
+    name: 'z-show',
+    detail: 'Toggle Visibility',
+    documentation:
+      'Toggle `display: none` based on a state expression. Unlike `z-if`, the element stays in the DOM.\n\n' +
+      '```html\n<div z-show="isOpen">Dropdown content</div>\n```',
+    insertText: 'z-show="$1"',
+  },
+  // -- Attribute Binding ---------------------------------------------------
+  {
+    name: 'z-bind',
+    detail: 'Dynamic Attribute',
+    documentation:
+      'Bind a state expression to an HTML attribute. Shorthand: `:attr="expr"`\n\n' +
+      '```html\n<a z-bind:href="url">Link</a>\n<a :href="url">Link</a>\n<img :src="imageUrl" :alt="imageAlt">\n<button :disabled="isLoading">Submit</button>\n```',
+    insertText: 'z-bind:$1="$2"',
+  },
+  // -- Class & Style Binding -----------------------------------------------
+  {
+    name: 'z-class',
+    detail: 'Dynamic CSS Classes',
+    documentation:
+      'Bind CSS classes dynamically using an object expression. Keys are class names, values are boolean state expressions.\n\n' +
+      '```html\n<div z-class="{active: isActive, disabled: isOff}">\n<li z-class="{selected: item.id === selectedId}">\n```',
+    insertText: 'z-class="{$1: $2}"',
+  },
+  {
+    name: 'z-style',
+    detail: 'Dynamic Inline Styles',
+    documentation:
+      'Bind inline styles dynamically using an object expression. Keys are CSS properties, values are state expressions.\n\n' +
+      '```html\n<div z-style="{color: textColor, fontSize: size + \'px\'}">\n<div z-style="{background: theme.bg}">\n```',
+    insertText: 'z-style="{$1: $2}"',
+  },
+  // -- Content Injection ---------------------------------------------------
+  {
+    name: 'z-text',
+    detail: 'Text Content',
+    documentation:
+      'Set the element\'s `textContent` from a state expression. Content is auto-escaped (safe from XSS).\n\n' +
+      '```html\n<span z-text="username"></span>\n<p z-text="message"></p>\n```',
+    insertText: 'z-text="$1"',
+  },
+  {
+    name: 'z-html',
+    detail: 'HTML Content',
+    documentation:
+      'Set the element\'s `innerHTML` from a state expression. **Warning:** only use with trusted content.\n\n' +
+      '```html\n<div z-html="richContent"></div>\n```',
+    insertText: 'z-html="$1"',
+  },
+  // -- Two-Way Binding -----------------------------------------------------
   {
     name: 'z-model',
     detail: 'Two-Way Binding',
@@ -746,6 +834,7 @@ const zDirectives = [
       '```html\n<input z-model="search" placeholder="Search...">\n```',
     insertText: 'z-model="$1"',
   },
+  // -- Element Reference ---------------------------------------------------
   {
     name: 'z-ref',
     detail: 'Element Reference',
@@ -754,6 +843,17 @@ const zDirectives = [
       '```html\n<input z-ref="searchInput">\n<canvas z-ref="chart"></canvas>\n```\n\nAccess: `this.refs.searchInput.focus()`',
     insertText: 'z-ref="$1"',
   },
+  // -- Event Binding (z-on: form) ------------------------------------------
+  {
+    name: 'z-on',
+    detail: 'Event Binding (z-on:event)',
+    documentation:
+      'Bind an event to a component method. Identical to `@event` shorthand.\n' +
+      'Supports modifiers: `.prevent`, `.stop`, `.self`, `.once`, `.capture`, `.passive`, `.debounce.{ms}`, `.throttle.{ms}`\n\n' +
+      '```html\n<button z-on:click="save">Save</button>\n<button z-on:click.prevent="handleClick">Click</button>\n<input z-on:input.debounce.300="search">\n```',
+    insertText: 'z-on:$1="$2"',
+  },
+  // -- Router Navigation ---------------------------------------------------
   {
     name: 'z-link',
     detail: 'Router Navigation Link',
@@ -762,6 +862,25 @@ const zDirectives = [
       '```html\n<a z-link="/">Home</a>\n<a z-link="/user/42">Profile</a>\n```',
     insertText: 'z-link="$1"',
   },
+  // -- Utility Directives --------------------------------------------------
+  {
+    name: 'z-cloak',
+    detail: 'Hide Until Rendered',
+    documentation:
+      'Hides an element until the component has rendered. Prevents flash of unprocessed template expressions.\n' +
+      'Add `[z-cloak] { display: none; }` to your CSS.\n\n' +
+      '```html\n<div z-cloak>{{title}}</div>\n```',
+    insertText: 'z-cloak',
+  },
+  {
+    name: 'z-pre',
+    detail: 'Skip Directive Processing',
+    documentation:
+      'Skip directive processing for this element and its children. Useful for displaying raw template syntax.\n\n' +
+      '```html\n<div z-pre>\n  This z-if="x" won\'t be processed\n</div>\n```',
+    insertText: 'z-pre',
+  },
+  // -- z-model Modifiers ---------------------------------------------------
   {
     name: 'z-lazy',
     detail: 'Lazy z-model modifier',
@@ -796,7 +915,7 @@ const eventDirectives = [
     name: '@click',
     detail: 'Click Event',
     documentation:
-      'Bind a click handler to a component method.\n\n' +
+      'Bind a click handler to a component method. Shorthand for `z-on:click`.\n\n' +
       '```html\n<button @click="increment">+1</button>\n<button @click="remove(${item.id})">Delete</button>\n```',
     insertText: '@click="$1"',
   },
@@ -819,6 +938,46 @@ const eventDirectives = [
     insertText: '@click.prevent.stop="$1"',
   },
   {
+    name: '@click.once',
+    detail: 'Click (one-time)',
+    documentation: 'Click handler that fires only once, then auto-removes itself.',
+    insertText: '@click.once="$1"',
+  },
+  {
+    name: '@click.self',
+    detail: 'Click (self only)',
+    documentation: 'Click handler that only fires if the event target is the element itself (not a child).',
+    insertText: '@click.self="$1"',
+  },
+  {
+    name: '@click.capture',
+    detail: 'Click (capture phase)',
+    documentation: 'Click handler that listens during the capture phase instead of the bubble phase.',
+    insertText: '@click.capture="$1"',
+  },
+  {
+    name: '@click.passive',
+    detail: 'Click (passive)',
+    documentation: 'Click handler registered with `{ passive: true }` for performance optimization.',
+    insertText: '@click.passive="$1"',
+  },
+  {
+    name: '@click.debounce',
+    detail: 'Click (debounced)',
+    documentation:
+      'Click handler debounced by a specified number of milliseconds. Default 250 ms.\n\n' +
+      '```html\n<button @click.debounce.300="search">Search</button>\n```',
+    insertText: '@click.debounce.${1:300}="$2"',
+  },
+  {
+    name: '@click.throttle',
+    detail: 'Click (throttled)',
+    documentation:
+      'Click handler throttled to fire at most once per specified milliseconds. Default 250 ms.\n\n' +
+      '```html\n<button @click.throttle.500="save">Save</button>\n```',
+    insertText: '@click.throttle.${1:250}="$2"',
+  },
+  {
     name: '@submit',
     detail: 'Submit Event',
     documentation:
@@ -837,6 +996,14 @@ const eventDirectives = [
     detail: 'Input Event',
     documentation: 'Fires on every keystroke / input change.\n\n```html\n<input @input="handleInput">\n```',
     insertText: '@input="$1"',
+  },
+  {
+    name: '@input.debounce',
+    detail: 'Input (debounced)',
+    documentation:
+      'Input handler debounced by a specified number of milliseconds. Ideal for search-as-you-type.\n\n' +
+      '```html\n<input @input.debounce.300="search">\n```',
+    insertText: '@input.debounce.${1:300}="$2"',
   },
   {
     name: '@change',
@@ -897,6 +1064,20 @@ const eventDirectives = [
     detail: 'Scroll Event',
     documentation: 'Fires when the element is scrolled.',
     insertText: '@scroll="$1"',
+  },
+  {
+    name: '@scroll.throttle',
+    detail: 'Scroll (throttled)',
+    documentation:
+      'Scroll handler throttled to fire at most once per specified milliseconds.\n\n' +
+      '```html\n<div @scroll.throttle.100="onScroll">...</div>\n```',
+    insertText: '@scroll.throttle.${1:100}="$2"',
+  },
+  {
+    name: '@scroll.passive',
+    detail: 'Scroll (passive)',
+    documentation: 'Scroll handler registered with `{ passive: true }` for performance.',
+    insertText: '@scroll.passive="$1"',
   },
   {
     name: '@load',

@@ -178,6 +178,13 @@ const htmlHoverProvider = {
         const modDoc = modifiers.map(m => {
           if (m === 'prevent') return '`.prevent` — calls `e.preventDefault()`';
           if (m === 'stop') return '`.stop` — calls `e.stopPropagation()`';
+          if (m === 'once') return '`.once` — handler fires once then auto-removes';
+          if (m === 'self') return '`.self` — only fires if target is the element itself';
+          if (m === 'capture') return '`.capture` — listens during capture phase';
+          if (m === 'passive') return '`.passive` — registered with `{ passive: true }`';
+          if (m === 'debounce') return '`.debounce` — debounce handler (next value is ms)';
+          if (m === 'throttle') return '`.throttle` — throttle handler (next value is ms)';
+          if (/^\d+$/.test(m)) return `\`${m}ms\` delay`;
           return `\`.${m}\``;
         }).join('\n');
         const augmented = {
@@ -188,10 +195,16 @@ const htmlHoverProvider = {
       }
     }
 
-    // z-* directives
+    // z-* directives (including z-on:event with modifiers)
     const zMatch = word.match(/^(z-[\w]+)/);
-    if (zMatch && directiveMap.has(zMatch[1])) {
-      return buildHover(directiveMap.get(zMatch[1]));
+    if (zMatch) {
+      // z-on:event → treat like @event for hover
+      if (zMatch[1] === 'z-on' && directiveMap.has('z-on')) {
+        return buildHover(directiveMap.get('z-on'));
+      }
+      if (directiveMap.has(zMatch[1])) {
+        return buildHover(directiveMap.get(zMatch[1]));
+      }
     }
 
     return undefined;

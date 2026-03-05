@@ -2,6 +2,121 @@
 
   "_comment_directives": "──── z-* Directives ────",
 
+  "z-if Conditional": {
+    "prefix": "z-if",
+    "body": [
+      "z-if=\"${1:condition}\""
+    ],
+    "description": "zQuery conditional rendering — removes element from DOM when falsy."
+  },
+  "z-if / z-else Block": {
+    "prefix": "z-if-else",
+    "body": [
+      "<${1:div} z-if=\"${2:condition}\">",
+      "\t$3",
+      "</${1}>",
+      "<${1} z-else>",
+      "\t$4",
+      "</${1}>"
+    ],
+    "description": "zQuery z-if / z-else conditional block."
+  },
+  "z-if / z-else-if / z-else Block": {
+    "prefix": "z-if-elseif-else",
+    "body": [
+      "<${1:div} z-if=\"${2:condition1}\">",
+      "\t$5",
+      "</${1}>",
+      "<${1} z-else-if=\"${3:condition2}\">",
+      "\t$6",
+      "</${1}>",
+      "<${1} z-else>",
+      "\t$7",
+      "</${1}>"
+    ],
+    "description": "zQuery z-if / z-else-if / z-else conditional chain."
+  },
+  "z-else-if Attribute": {
+    "prefix": "z-else-if",
+    "body": [
+      "z-else-if=\"${1:condition}\""
+    ],
+    "description": "zQuery else-if branch — must follow z-if or z-else-if."
+  },
+  "z-else Attribute": {
+    "prefix": "z-else",
+    "body": [
+      "z-else"
+    ],
+    "description": "zQuery else branch — must follow z-if or z-else-if."
+  },
+  "z-for List Rendering": {
+    "prefix": "z-for",
+    "body": [
+      "<${1:li} z-for=\"${2:item} in ${3:items}\">",
+      "\t{{${2}.${4:name}}}",
+      "</${1}>"
+    ],
+    "description": "zQuery list rendering — repeats element for each item. $index is auto-provided."
+  },
+  "z-for with Index": {
+    "prefix": "z-for-index",
+    "body": [
+      "<${1:li} z-for=\"${2:item} in ${3:items}\">",
+      "\t{{\\$index}}: {{${2}.${4:name}}}",
+      "</${1}>"
+    ],
+    "description": "zQuery list rendering with $index."
+  },
+  "z-show Toggle": {
+    "prefix": "z-show",
+    "body": [
+      "z-show=\"${1:condition}\""
+    ],
+    "description": "zQuery visibility toggle — sets display:none when falsy (element stays in DOM)."
+  },
+  "z-bind Dynamic Attribute": {
+    "prefix": "z-bind",
+    "body": [
+      "z-bind:${1:attr}=\"${2:expression}\""
+    ],
+    "description": "zQuery dynamic attribute binding. Shorthand: :attr=\"expr\""
+  },
+  ":attr Shorthand Binding": {
+    "prefix": ":bind",
+    "body": [
+      ":${1:attr}=\"${2:expression}\""
+    ],
+    "description": "zQuery attribute binding shorthand (:href, :src, :disabled, etc.)"
+  },
+  "z-class Dynamic Classes": {
+    "prefix": "z-class",
+    "body": [
+      "z-class=\"{${1:className}: ${2:condition}}\""
+    ],
+    "description": "zQuery dynamic CSS class binding with object syntax."
+  },
+  "z-style Dynamic Styles": {
+    "prefix": "z-style",
+    "body": [
+      "z-style=\"{${1:property}: ${2:value}}\""
+    ],
+    "description": "zQuery dynamic inline style binding with object syntax."
+  },
+  "z-text Content": {
+    "prefix": "z-text",
+    "body": [
+      "z-text=\"${1:stateKey}\""
+    ],
+    "description": "zQuery text content binding — sets textContent (auto-escaped)."
+  },
+  "z-html Content": {
+    "prefix": "z-html",
+    "body": [
+      "z-html=\"${1:stateKey}\""
+    ],
+    "description": "zQuery HTML content binding — sets innerHTML (use with trusted content only)."
+  },
   "z-model Attribute": {
     "prefix": "z-model",
     "body": [
@@ -72,6 +187,34 @@
       "z-ref=\"${1:refName}\""
     ],
     "description": "zQuery element reference — access via this.refs.refName in component code."
+  },
+  "z-on: Event Binding": {
+    "prefix": "z-on",
+    "body": [
+      "z-on:${1:event}=\"${2:methodName}\""
+    ],
+    "description": "zQuery event binding (z-on:event form). Identical to @event shorthand."
+  },
+  "z-on: with Modifier": {
+    "prefix": "z-on-mod",
+    "body": [
+      "z-on:${1:click}.${2|prevent,stop,once,self,capture,passive|}=\"${3:methodName}\""
+    ],
+    "description": "zQuery event binding with modifier."
+  },
+  "z-cloak Attribute": {
+    "prefix": "z-cloak",
+    "body": [
+      "z-cloak"
+    ],
+    "description": "zQuery hide-until-rendered — prevents flash of unprocessed template."
+  },
+  "z-pre Attribute": {
+    "prefix": "z-pre",
+    "body": [
+      "z-pre"
+    ],
+    "description": "zQuery skip directive processing for this element and its children."
   },
   "z-link (Router)": {
     "prefix": "z-link",
@@ -152,6 +295,48 @@
       "@${1:click}.prevent.stop=\"${2:methodName}\""
     ],
     "description": "zQuery event binding with both preventDefault and stopPropagation."
+  },
+  "@event.once": {
+    "prefix": "@event-once",
+    "body": [
+      "@${1:click}.once=\"${2:methodName}\""
+    ],
+    "description": "zQuery one-time event — handler fires once then auto-removes."
+  },
+  "@event.self": {
+    "prefix": "@event-self",
+    "body": [
+      "@${1:click}.self=\"${2:methodName}\""
+    ],
+    "description": "zQuery self-only event — only fires when target is the element itself."
+  },
+  "@event.capture": {
+    "prefix": "@event-capture",
+    "body": [
+      "@${1:click}.capture=\"${2:methodName}\""
+    ],
+    "description": "zQuery capture-phase event listener."
+  },
+  "@event.passive": {
+    "prefix": "@event-passive",
+    "body": [
+      "@${1:scroll}.passive=\"${2:methodName}\""
+    ],
+    "description": "zQuery passive event listener for performance."
+  },
+  "@event.debounce": {
+    "prefix": "@event-debounce",
+    "body": [
+      "@${1:input}.debounce.${2:300}=\"${3:methodName}\""
+    ],
+    "description": "zQuery debounced event — delays handler by specified ms."
+  },
+  "@event.throttle": {
+    "prefix": "@event-throttle",
+    "body": [
+      "@${1:scroll}.throttle.${2:100}=\"${3:methodName}\""
+    ],
+    "description": "zQuery throttled event — fires at most once per specified ms."
   },
 
   "_comment_templates": "──── Component Templates ────",

@@ -1,6 +1,6 @@
 # zQuery for VS Code
 
-Full developer tooling for the [zQuery (zero-query)](https://github.com/tonywied17/zero-query) frontend library — autocomplete, hover documentation, HTML directive support, and **120+ code snippets**.
+Full developer tooling for the [zQuery (zero-query)](https://github.com/tonywied17/zero-query) frontend library — autocomplete, hover documentation, HTML directive support, and **140+ code snippets**.
 
 ---
 
@@ -13,19 +13,21 @@ Type `$.` anywhere in JavaScript or TypeScript to instantly see every method on 
 - **Namespace completions** — `$.*`, `$.http.*`, `$.storage.*`, `$.session.*`, `$.bus.*`
 - **Collection chain completions** — `$.all('selector').` suggests 50+ chainable methods
 - **Component key completions** — Inside `$.component({})` get suggestions for `state`, `mount`, `render`, `methods`, lifecycle hooks, and more
-- **HTML directive completions** — `@` triggers event directives, `z-` triggers zQuery directives inside HTML tags
+- **HTML directive completions** — `@` triggers event directives, `z-` triggers structural directives, `:` triggers attribute binding shorthands
 
 ### Hover Documentation
 
 Hover over any `$` method call or HTML directive to see rich inline documentation with code examples.
 
 - `$`, `$.id`, `$.class`, `$.all`, `$.component`, `$.mount`, `$.http.get`, `$.storage.get`, `$.bus.on`, and more
-- Directive docs for `@click`, `@submit.prevent`, `z-model`, `z-ref`, `z-link`
+- **Structural directives** — `z-if`, `z-else-if`, `z-else`, `z-for`, `z-show`, `z-cloak`, `z-pre`
+- **Data binding directives** — `z-bind` / `:attr`, `z-class`, `z-style`, `z-text`, `z-html`, `z-model`, `z-ref`
+- **Event directives** — `@click`, `z-on:click`, `@submit.prevent`, and all event modifiers (`.prevent`, `.stop`, `.once`, `.self`, `.capture`, `.passive`, `.debounce.{ms}`, `.throttle.{ms}`)
 - Works across **JavaScript**, **TypeScript**, and **HTML** files
 
 ### Code Snippets
 
-**120+ snippets** covering the entire zQuery API — type `zq-` to browse them all.
+**140+ snippets** covering the entire zQuery API — type `zq-` to browse them all.
 
 ---
 
@@ -183,10 +185,31 @@ Hover over any `$` method call or HTML directive to see rich inline documentatio
 
 ## HTML Snippets
 
-### Directives
+### Structural Directives
 
 | Prefix | Description |
 |--------|-------------|
+| `z-if` | Conditional rendering — removes element when falsy |
+| `z-if-else` | `z-if` / `z-else` block pair |
+| `z-if-elseif-else` | Full `z-if` / `z-else-if` / `z-else` chain |
+| `z-else-if` | Else-if branch (must follow `z-if` or `z-else-if`) |
+| `z-else` | Else branch (must follow `z-if` or `z-else-if`) |
+| `z-for` | List rendering — repeats element for each item |
+| `z-for-index` | List rendering with `$index` |
+| `z-show` | Toggle visibility via `display:none` (stays in DOM) |
+| `z-cloak` | Hide until rendered — prevents template flash |
+| `z-pre` | Skip directive processing for element and children |
+
+### Data Binding Directives
+
+| Prefix | Description |
+|--------|-------------|
+| `z-bind` | Dynamic attribute binding (`z-bind:attr="expr"`) |
+| `:bind` | Attribute binding shorthand (`:href`, `:src`, etc.) |
+| `z-class` | Dynamic CSS class binding with object syntax |
+| `z-style` | Dynamic inline style binding with object syntax |
+| `z-text` | Text content binding — sets `textContent` (auto-escaped) |
+| `z-html` | HTML content binding — sets `innerHTML` (trusted content) |
 | `z-model` | Two-way data binding |
 | `z-model-nested` | Nested state binding (`parent.child`) |
 | `z-model-mods` | Binding with modifier (`z-lazy`, `z-trim`, `z-number`) |
@@ -195,8 +218,10 @@ Hover over any `$` method call or HTML directive to see rich inline documentatio
 | `z-model-number` | Number input |
 | `z-model-select` | Select dropdown |
 | `z-model-textarea` | Textarea with optional lazy modifier |
-| `z-ref` | Element reference |
+| `z-ref` | Element reference (`this.refs.name`) |
 | `z-link` | SPA navigation link |
+| `z-on` | Event binding (`z-on:event` form) |
+| `z-on-mod` | Event binding with modifier |
 
 ### Event Bindings
 
@@ -212,6 +237,12 @@ Hover over any `$` method call or HTML directive to see rich inline documentatio
 | `@keyup` | Keyup handler |
 | `@event` | Custom event binding |
 | `@event-prevent-stop` | Event with `prevent` + `stop` modifiers |
+| `@event-once` | One-time event — auto-removes after first fire |
+| `@event-self` | Self-only — fires only when target is the element |
+| `@event-capture` | Capture-phase event listener |
+| `@event-passive` | Passive listener for scroll performance |
+| `@event-debounce` | Debounced event — delays by specified ms |
+| `@event-throttle` | Throttled event — fires at most once per specified ms |
 
 ### Component Templates
 
@@ -237,6 +268,25 @@ Hover over any `$` method call or HTML directive to see rich inline documentatio
 |--------|-------------|
 | `zq-outlet` | Router outlet element |
 | `zq-nav` | Navigation bar with z-links |
+
+---
+
+## Event Modifiers
+
+zQuery supports chaining modifiers on any event binding (`@event` or `z-on:event`):
+
+| Modifier | Description |
+|----------|-------------|
+| `.prevent` | Calls `event.preventDefault()` |
+| `.stop` | Calls `event.stopPropagation()` |
+| `.once` | Handler fires once then auto-removes |
+| `.self` | Only fires when `event.target` is the element itself |
+| `.capture` | Uses capture-phase event listener |
+| `.passive` | Marks listener as passive (performance hint) |
+| `.debounce.{ms}` | Debounces handler by specified milliseconds |
+| `.throttle.{ms}` | Throttles handler to fire at most once per specified ms |
+
+Modifiers can be chained: `@click.prevent.stop="handler"`, `@scroll.passive.throttle.100="onScroll"`
 
 ---
 

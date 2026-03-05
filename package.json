@@ -2,7 +2,7 @@
   "name": "zquery-vs-code",
   "displayName": "zQuery for VS Code",
   "description": "Full developer tooling for the zQuery (zero-query) frontend library — autocomplete, hover documentation, HTML directive support, and code snippets.",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "publisher": "zQuery",
   "author": "Anthony Wiedman",
   "license": "MIT",
