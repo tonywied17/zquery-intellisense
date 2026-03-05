@@ -28,7 +28,8 @@ const dollarMethods = [
     kind: 'Function',
     detail: '(selector, context?) → ZQueryCollection',
     documentation:
-      'Collection selector — returns a `ZQueryCollection` of all matching elements.\n\n' +
+      'Collection selector — returns a `ZQueryCollection` of all matching elements.\n' +
+      '`queryAll` is the ES module export name for `$.all()`.\n\n' +
       '```js\n' +
       "$.all('.card')           // all .card elements\n" +
       "$.all('<div>Hi</div>')   // create elements as collection\n" +
@@ -478,7 +479,7 @@ const dollarMethods = [
     name: 'version',
     kind: 'Property',
     detail: 'string',
-    documentation: "Library version string (e.g. `'0.2.3'`).",
+    documentation: "Library version string (e.g. `'0.4.1'`).",
     insertText: 'version',
   },
   {
@@ -768,6 +769,10 @@ const zDirectives = [
     documentation:
       'Repeat an element for each item in an array. Exposes the loop variable and `$index` inside `{{…}}` expressions.\n\n' +
       '```html\n<li z-for="item in items">\n  {{$index}}: {{item.name}}\n</li>\n```\n\n' +
+      '**Additional forms:**\n' +
+      '- `(item, index) in items` — destructured index\n' +
+      '- `n in 5` — number range → `[1, 2, 3, 4, 5]`\n' +
+      '- `(val, key) in object` — object iteration (key/value entries)\n\n' +
       'Nested loops are supported. Each `z-for` creates its own scope.',
     insertText: 'z-for="$1 in $2"',
   },
@@ -850,7 +855,8 @@ const zDirectives = [
     documentation:
       'Bind an event to a component method. Identical to `@event` shorthand.\n' +
       'Supports modifiers: `.prevent`, `.stop`, `.self`, `.once`, `.capture`, `.passive`, `.debounce.{ms}`, `.throttle.{ms}`\n\n' +
-      '```html\n<button z-on:click="save">Save</button>\n<button z-on:click.prevent="handleClick">Click</button>\n<input z-on:input.debounce.300="search">\n```',
+      'Pass `$event` to inject the native DOM event, plus strings, numbers, booleans, `null`, and `state.key` references.\n\n' +
+      '```html\n<button z-on:click="save">Save</button>\n<button z-on:click.prevent="handleClick">Click</button>\n<input z-on:input.debounce.300="search">\n<button z-on:click="doSomething($event, \'foo\')">With args</button>\n```',
     insertText: 'z-on:$1="$2"',
   },
   // -- Router Navigation ---------------------------------------------------
@@ -915,8 +921,9 @@ const eventDirectives = [
     name: '@click',
     detail: 'Click Event',
     documentation:
-      'Bind a click handler to a component method. Shorthand for `z-on:click`.\n\n' +
-      '```html\n<button @click="increment">+1</button>\n<button @click="remove(${item.id})">Delete</button>\n```',
+      'Bind a click handler to a component method. Shorthand for `z-on:click`.\n' +
+      'Pass `$event` for the native event, plus strings, numbers, booleans, `null`, and `state.key` references.\n\n' +
+      '```html\n<button @click="increment">+1</button>\n<button @click="remove(${item.id})">Delete</button>\n<button @click="handle($event, \'edit\')">With $event</button>\n```',
     insertText: '@click="$1"',
   },
   {

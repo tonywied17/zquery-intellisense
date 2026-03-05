@@ -132,6 +132,17 @@ const jsHoverProvider = {
       return buildHover(dollarMap.get(dollarMatch[1]), '$');
     }
 
+    // ZQueryCollection methods — hover on .method() after $.all(…) chains
+    const lineText = document.lineAt(position.line).text;
+    const beforeCursor = lineText.substring(0, position.character);
+    const collMatch = word.match(/\.?(\w+)$/);
+    if (collMatch && collectionMap.has(collMatch[1])) {
+      // Check if this looks like a collection chain: $.all(…).method or .method().method
+      if (/(?:\$|zQuery)\.all\s*\(/.test(beforeCursor) || /\)\s*\.\s*\w*$/.test(beforeCursor)) {
+        return buildHover(collectionMap.get(collMatch[1]), 'ZQueryCollection');
+      }
+    }
+
     // Component definition keys (pages, state, render, etc.)
     // Detect if cursor is on a key inside a $.component({…}) block
     if (componentKeyMap.has(word)) {
