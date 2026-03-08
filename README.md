@@ -11,7 +11,7 @@ Full developer tooling for the [zQuery (zero-query)](https://github.com/tonywied
 Type `$.` anywhere in JavaScript or TypeScript to instantly see every method on the `$` namespace — complete with descriptions, signatures, and smart insert text.
 
 - **Namespace completions** — `$.*`, `$.http.*`, `$.storage.*`, `$.session.*`, `$.bus.*`
-- **Collection chain completions** — `$.all('selector').` suggests 50+ chainable methods
+- **Collection chain completions** — `$('selector').` and `$.all('selector').` suggest 50+ chainable methods
 - **Component key completions** — Inside `$.component({})` get suggestions for `state`, `render`, `styles`, `templateUrl`, `styleUrl`, `pages`, `base`, `computed`, `watch`, lifecycle hooks, and more
 - **HTML directive completions** — `@` triggers event directives, `z-` triggers structural directives, `:` triggers attribute binding shorthands
 
@@ -19,7 +19,7 @@ Type `$.` anywhere in JavaScript or TypeScript to instantly see every method on 
 
 Hover over any `$` method call or HTML directive to see rich inline documentation with code examples.
 
-- `$`, `$.id`, `$.class`, `$.all`, `$.component`, `$.mount`, `$.http.get`, `$.storage.get`, `$.bus.on`, and more
+- `$`, `$.id`, `$.class`, `$.name`, `$.all`, `$.component`, `$.mount`, `$.http.get`, `$.storage.get`, `$.bus.on`, and more
 - **Structural directives** — `z-if`, `z-else-if`, `z-else`, `z-for`, `z-show`, `z-cloak`, `z-pre`
 - **Data binding directives** — `z-bind` / `:attr`, `z-class`, `z-style`, `z-text`, `z-html`, `z-model`, `z-ref`
 - **Event directives** — `@click`, `z-on:click`, `@submit.prevent`, and all event modifiers (`.prevent`, `.stop`, `.once`, `.self`, `.capture`, `.passive`, `.debounce.{ms}`, `.throttle.{ms}`)
@@ -37,14 +37,15 @@ Hover over any `$` method call or HTML directive to see rich inline documentatio
 
 | Prefix | Description |
 |--------|-------------|
-| `zq-select` | CSS selector — first match via `querySelector` |
-| `zq-select-scoped` | Scoped selector — first match inside a parent |
+| `zq-select` | Chainable selector → `ZQueryCollection` |
+| `zq-select-scoped` | Scoped selector → `ZQueryCollection` inside a parent |
 | `zq-id` | Select by ID |
 | `zq-class` | Select first element with class |
-| `zq-classes` | Select all elements with class |
-| `zq-bytag` | Select all elements by tag name |
-| `zq-children` | Direct children of a parent element |
-| `zq-all` | Query all matching elements and chain a method |
+| `zq-classes` | Select all elements with class → `ZQueryCollection` |
+| `zq-bytag` | Select all elements by tag name → `ZQueryCollection` |
+| `zq-name` | Select elements by name attribute → `ZQueryCollection` |
+| `zq-children` | Direct children of a parent element → `ZQueryCollection` |
+| `zq-all` | Query all matching elements and chain — alias for `$()` |
 | `zq-create` | Create a DOM element with attributes |
 | `zq-domready` | DOM-ready callback shorthand `$(fn)` |
 | `zq-ready` | DOM ready callback (`DOMContentLoaded`) |

@@ -11,15 +11,15 @@ const dollarMethods = [
   {
     name: '$',
     kind: 'Function',
-    detail: '(selector, context?) → Element | null',
+    detail: '(selector, context?) → ZQueryCollection',
     documentation:
-      'CSS selector — returns the first matching element via `querySelector`.\n' +
-      'Also accepts elements, NodeLists, HTML strings, and functions (DOM-ready).\n\n' +
+      'Chainable selector — always returns a `ZQueryCollection` (like jQuery).\n' +
+      'Accepts CSS selectors, elements, NodeLists, HTML strings, and functions (DOM-ready).\n\n' +
       '```js\n' +
-      "const email = $('input[name=\"email\"]');  // first matching input\n" +
-      "const nested = $('li', '#todo-list');     // scoped to parent\n" +
+      "$('.card').addClass('active');             // chainable collection\n" +
+      "const nested = $('li', '#todo-list');      // scoped to parent\n" +
       "const el = $('<div class=\"alert\">Hi</div>'); // create from HTML\n" +
-      '$(() => console.log(\'DOM ready\'));        // DOM-ready callback\n' +
+      '$(() => console.log(\'DOM ready\'));         // DOM-ready callback\n' +
       '```',
     insertText: "('$1')",
   },
@@ -28,7 +28,7 @@ const dollarMethods = [
     kind: 'Function',
     detail: '(selector, context?) → ZQueryCollection',
     documentation:
-      'Collection selector — returns a `ZQueryCollection` of all matching elements.\n' +
+      'Alias for `$()` — returns a `ZQueryCollection` of all matching elements.\n' +
       '`queryAll` is the ES module export name for `$.all()`.\n\n' +
       '```js\n' +
       "$.all('.card')           // all .card elements\n" +
@@ -54,22 +54,29 @@ const dollarMethods = [
   {
     name: 'classes',
     kind: 'Function',
-    detail: '(name) → Element[]',
-    documentation: '`document.getElementsByClassName(name)` as array.\n\n```js\n$.classes(\'card\') // all .card elements as array\n```',
+    detail: '(name) → ZQueryCollection',
+    documentation: '`document.getElementsByClassName(name)` wrapped in a `ZQueryCollection`.\n\n```js\n$.classes(\'card\') // ZQueryCollection of all .card elements\n```',
     insertText: "classes('$1')",
   },
   {
     name: 'tag',
     kind: 'Function',
-    detail: '(name) → Element[]',
-    documentation: '`document.getElementsByTagName(name)` as array.\n\n```js\n$.tag(\'li\') // all <li> elements\n```',
+    detail: '(name) → ZQueryCollection',
+    documentation: '`document.getElementsByTagName(name)` wrapped in a `ZQueryCollection`.\n\n```js\n$.tag(\'li\') // ZQueryCollection of all <li> elements\n```',
     insertText: "tag('$1')",
+  },
+  {
+    name: 'name',
+    kind: 'Function',
+    detail: '(name) → ZQueryCollection',
+    documentation: '`document.getElementsByName(name)` wrapped in a `ZQueryCollection`.\n\n```js\n$.name(\'color\') // ZQueryCollection of elements with name="color"\n```',
+    insertText: "name('$1')",
   },
   {
     name: 'children',
     kind: 'Function',
-    detail: '(parentId) → Element[]',
-    documentation: 'Children of `#parentId` as an array.\n\n```js\n$.children(\'nav\') // children of #nav\n```',
+    detail: '(parentId) → ZQueryCollection',
+    documentation: 'Children of `#parentId` wrapped in a `ZQueryCollection`.\n\n```js\n$.children(\'nav\') // ZQueryCollection of #nav children\n```',
     insertText: "children('$1')",
   },
   {
@@ -479,7 +486,7 @@ const dollarMethods = [
     name: 'version',
     kind: 'Property',
     detail: 'string',
-    documentation: "Library version string (e.g. `'0.6.1'`).",
+    documentation: "Library version string (e.g. `'0.6.2'`).",
     insertText: 'version',
   },
   {
@@ -520,6 +527,33 @@ const dollarMethods = [
       'Used internally by all template directives.\n\n' +
       '```js\nconst result = $.safeEval(\'count > 0 ? "yes" : "no"\', [state]);\n```',
     insertText: "safeEval('${1:expression}', [${2:scope}])",
+  },
+
+  // -- Error Handling ------------------------------------------------------
+  {
+    name: 'onError',
+    kind: 'Function',
+    detail: '(handler) → unsubscribe()',
+    documentation:
+      'Register a global error handler for zQuery errors. Returns an unsubscribe function.\n\n' +
+      '```js\n$.onError((err) => {\n  console.error(err.code, err.message);\n});\n```',
+    insertText: 'onError((err) => {\n\t$1\n})',
+  },
+  {
+    name: 'ZQueryError',
+    kind: 'Function',
+    detail: 'class ZQueryError extends Error',
+    documentation:
+      'Custom error class with an error `code` property. Thrown by zQuery internals.\n\n' +
+      '```js\ntry { $.mount(null); }\ncatch (e) { if (e instanceof $.ZQueryError) console.log(e.code); }\n```',
+    insertText: 'ZQueryError',
+  },
+  {
+    name: 'ErrorCode',
+    kind: 'Property',
+    detail: 'Record<string, string>',
+    documentation: 'Enum-like object of all zQuery error code constants (e.g. `$.ErrorCode.ZQ_COMP_NOT_FOUND`).',
+    insertText: 'ErrorCode',
   },
 ];
 
@@ -689,6 +723,7 @@ const collectionMethods = [
   // Iteration
   { name: 'each', kind: 'Method', detail: '(fn(index, element)) → this', documentation: 'Iterate elements. `this` inside callback is the element.', insertText: 'each((i, el) => {\n\t$1\n})' },
   { name: 'map', kind: 'Method', detail: '(fn(index, element)) → Array', documentation: 'Map over elements, returns plain array.', insertText: 'map((i, el) => $1)' },
+  { name: 'forEach', kind: 'Method', detail: '(fn(element, index, elements)) → this', documentation: 'Array-style forEach. Returns `this` for chaining.', insertText: 'forEach((el, i) => {\n\t$1\n})' },
   { name: 'first', kind: 'Method', detail: '() → Element | null', documentation: 'First raw element.', insertText: 'first()' },
   { name: 'last', kind: 'Method', detail: '() → Element | null', documentation: 'Last raw element.', insertText: 'last()' },
   { name: 'eq', kind: 'Method', detail: '(index) → ZQueryCollection', documentation: 'New collection with element at index.', insertText: 'eq(${1:0})' },

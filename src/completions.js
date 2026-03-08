@@ -88,6 +88,7 @@ const jsDotProvider = {
 
 /**
  * Provides ZQueryCollection method completions after patterns like:
+ *   $('…').             (since $() returns ZQueryCollection)
  *   $.all('…').
  *   $.all(…).method().
  */
@@ -97,9 +98,8 @@ const jsCollectionProvider = {
 
     const linePrefix = document.lineAt(position).text.substring(0, position.character);
 
-    // Heuristic: detect chained calls following $.all(…)
-    // Match patterns like:  $.all('…').   or  $.all(something).method().
-    if (/\$\.all\([^)]*\)(?:\.\w+\([^)]*\))*\.\s*$/.test(linePrefix)) {
+    // Heuristic: detect chained calls following $() or $.all()
+    if (/(?:\$\.all|(?:^|[^.\w])\$)\([^)]*\)(?:\.\w+\([^)]*\))*\.\s*$/.test(linePrefix)) {
       return docs.collectionMethods.map((e, i) => toCompletion(e, String(i).padStart(2, '0')));
     }
 

@@ -7,14 +7,14 @@
     "body": [
       "const ${1:el} = $('${2:selector}');"
     ],
-    "description": "CSS selector — first matching element via querySelector."
+    "description": "Chainable selector — returns a ZQueryCollection via querySelectorAll."
   },
   "zQuery Select Scoped": {
     "prefix": "zq-select-scoped",
     "body": [
       "const ${1:el} = $('${2:selector}', '${3:#parent}');"
     ],
-    "description": "Scoped CSS selector — first match inside a parent element."
+    "description": "Scoped chainable selector — ZQueryCollection scoped to a parent element."
   },
   "zQuery Select by ID": {
     "prefix": "zq-id",
@@ -35,21 +35,28 @@
     "body": [
       "const ${1:elements} = $.classes('${2:className}');"
     ],
-    "description": "Select all elements with class — getElementsByClassName as array."
+    "description": "Select all elements with class — ZQueryCollection."
   },
   "zQuery Select by Tag": {
     "prefix": "zq-bytag",
     "body": [
       "const ${1:elements} = $.tag('${2:div}');"
     ],
-    "description": "Select all elements by tag name — getElementsByTagName as array."
+    "description": "Select all elements by tag name — ZQueryCollection."
+  },
+  "zQuery Select by Name": {
+    "prefix": "zq-name",
+    "body": [
+      "const ${1:elements} = $.name('${2:fieldName}');"
+    ],
+    "description": "Select elements by name attribute — ZQueryCollection."
   },
   "zQuery Children": {
     "prefix": "zq-children",
     "body": [
       "const ${1:items} = $.children('${2:parentId}');"
     ],
-    "description": "Direct children of #parentId as array."
+    "description": "Direct children of #parentId as ZQueryCollection."
   },
   "zQuery Collection Chain": {
     "prefix": "zq-all",
@@ -58,7 +65,7 @@
       "\t${3}",
       "});}$0"
     ],
-    "description": "Query all matching elements and chain a method."
+    "description": "Query all matching elements and chain a method. Alias for $() — both return ZQueryCollection."
   },
   "zQuery Create Element": {
     "prefix": "zq-create",
