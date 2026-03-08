@@ -438,5 +438,35 @@
       "</nav>"
     ],
     "description": "Navigation bar with z-link router links."
+  },
+  "z-key": {
+    "prefix": "z-key",
+    "body": [
+      "z-key=\"{{${1:item.id}}}\""
+    ],
+    "description": "Keyed reconciliation attribute for z-for loops — enables efficient DOM morphing by matching elements by identity."
+  },
+  "zQuery Slot (default)": {
+    "prefix": "zq-slot",
+    "body": [
+      "<slot>${1:Fallback content}</slot>"
+    ],
+    "description": "Default slot for content distribution. Inner content is used as fallback when no content is provided."
+  },
+  "zQuery Slot (named)": {
+    "prefix": "zq-slot-named",
+    "body": [
+      "<slot name=\"${1:header}\">${2:Default header}</slot>"
+    ],
+    "description": "Named slot for targeted content distribution. Fill with <template slot='name'>…</template> or slot='name' on a direct child."
+  },
+  "zQuery For + Key": {
+    "prefix": "zq-for-key",
+    "body": [
+      "<${1:li} z-for=\"${2:item} in ${3:items}\" z-key=\"{{${2:item}.${4:id}}}\">",
+      "\t{{${2:item}.${5:name}}}",
+      "</${1:li}>"
+    ],
+    "description": "z-for loop with z-key for keyed DOM reconciliation."
   }
 }

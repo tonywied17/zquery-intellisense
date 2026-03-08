@@ -496,6 +496,31 @@ const dollarMethods = [
     documentation: 'Remove `$` from `window` and return the library object.\n\n```js\nconst zq = $.noConflict();\n```',
     insertText: 'noConflict()',
   },
+
+  // -- DOM Morphing --------------------------------------------------------
+  {
+    name: 'morph',
+    kind: 'Function',
+    detail: '(rootEl, newHTML) → void',
+    documentation:
+      'Patch a live DOM tree to match new HTML using real-DOM diffing.\n' +
+      'Preserves focus, scroll position, and form state. Used automatically by the component system on re-renders.\n\n' +
+      '```js\nconst el = $.id(\'content\');\n$.morph(el, \'<div id="content"><p>Updated</p></div>\');\n```',
+    insertText: "morph(${1:element}, '${2:newHTML}')",
+  },
+
+  // -- Expression Evaluator ------------------------------------------------
+  {
+    name: 'safeEval',
+    kind: 'Function',
+    detail: '(expr, scope) → any',
+    documentation:
+      'CSP-safe expression evaluator — parses and evaluates JS expressions without `eval()` or `new Function()`.\n' +
+      'Supports property access, arithmetic, comparisons, logical ops, ternary, optional chaining, nullish coalescing, template literals, arrow functions, and more.\n' +
+      'Used internally by all template directives.\n\n' +
+      '```js\nconst result = $.safeEval(\'count > 0 ? "yes" : "no"\', [state]);\n```',
+    insertText: "safeEval('${1:expression}', [${2:scope}])",
+  },
 ];
 
 
@@ -911,6 +936,16 @@ const zDirectives = [
       '```html\n<input z-model="price" z-number>\n```',
     insertText: 'z-number',
   },
+  // -- Keyed Reconciliation ------------------------------------------------
+  {
+    name: 'z-key',
+    detail: 'Keyed Reconciliation',
+    documentation:
+      'Assign a unique key to elements inside `z-for` loops for efficient DOM morphing. ' +
+      'When the list is re-rendered, `z-key` lets the morph engine match old and new elements by identity instead of position — preserving focus, animations, and local state.\n\n' +
+      '```html\n<li z-for="item in items" z-key="{{item.id}}">\n  {{item.name}}\n</li>\n```',
+    insertText: 'z-key="{{$1}}"',
+  },
 ];
 
 
@@ -1123,6 +1158,8 @@ const componentKeys = [
   { name: 'mounted', kind: 'Method', detail: '() → void', documentation: 'Called once after first render and DOM insertion.', insertText: 'mounted() {\n\t$1\n},' },
   { name: 'updated', kind: 'Method', detail: '() → void', documentation: 'Called after every subsequent re-render.', insertText: 'updated() {\n\t$1\n},' },
   { name: 'destroyed', kind: 'Method', detail: '() → void', documentation: 'Called when the component is destroyed. Clean up here.', insertText: 'destroyed() {\n\t$1\n},' },
+  { name: 'computed', kind: 'Property', detail: '{ name: (state) => value }', documentation: 'Define lazy computed getters derived from state. Accessed as regular state properties — they recompute automatically when dependencies change.\n\n```js\ncomputed: {\n  fullName(state) { return state.first + \' \' + state.last; },\n  itemCount(state) { return state.items.length; },\n}\n```\n\nUse in templates: `<span z-text="fullName"></span>`', insertText: 'computed: {\n\t${1:name}(state) { return ${2:state.value}; },\n},' },
+  { name: 'watch', kind: 'Property', detail: '{ key: (newVal, oldVal) => void }', documentation: 'Watch state keys and run callbacks when they change. Watchers fire after the state update and before re-render.\n\n```js\nwatch: {\n  selectedId(newVal, oldVal) {\n    console.log(`Changed from ${oldVal} to ${newVal}`);\n    this.loadDetail(newVal);\n  },\n}\n```', insertText: 'watch: {\n\t${1:key}(newVal, oldVal) {\n\t\t$2\n\t},\n},' },
 ];
 
 

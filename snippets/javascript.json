@@ -846,5 +846,62 @@
       "const ${1:zq} = $.noConflict();"
     ],
     "description": "Remove $ from window and return the zQuery library object."
+  },
+  "zQuery morph": {
+    "prefix": "zq-morph",
+    "body": [
+      "$.morph(${1:element}, '${2:newHTML}');"
+    ],
+    "description": "Patch a live DOM tree to match new HTML via real-DOM diffing. Preserves focus, scroll, and form state."
+  },
+  "zQuery safeEval": {
+    "prefix": "zq-safeeval",
+    "body": [
+      "const ${1:result} = $.safeEval('${2:expression}', [${3:scope}]);"
+    ],
+    "description": "CSP-safe expression evaluator — parse and evaluate JS expressions without eval() or new Function()."
+  },
+  "zQuery Component with Computed": {
+    "prefix": "zq-component-computed",
+    "body": [
+      "$.component('${1:my-component}', {",
+      "\tstate: () => ({",
+      "\t\t${2:firstName}: '${3}',",
+      "\t\t${4:lastName}: '${5}',",
+      "\t}),",
+      "",
+      "\tcomputed: {",
+      "\t\t${6:fullName}(state) {",
+      "\t\t\treturn state.${2:firstName} + ' ' + state.${4:lastName};",
+      "\t\t},",
+      "\t},",
+      "",
+      "\trender() {",
+      "\t\treturn `$7`;",
+      "\t},",
+      "});"
+    ],
+    "description": "Component with computed properties — lazy getters derived from state."
+  },
+  "zQuery Component with Watch": {
+    "prefix": "zq-component-watch",
+    "body": [
+      "$.component('${1:my-component}', {",
+      "\tstate: () => ({",
+      "\t\t${2:selectedId}: null,",
+      "\t}),",
+      "",
+      "\twatch: {",
+      "\t\t${2:selectedId}(newVal, oldVal) {",
+      "\t\t\t$3",
+      "\t\t},",
+      "\t},",
+      "",
+      "\trender() {",
+      "\t\treturn `$4`;",
+      "\t},",
+      "});"
+    ],
+    "description": "Component with watchers — run callbacks when state keys change."
   }
 }

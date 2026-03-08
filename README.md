@@ -1,6 +1,6 @@
 # zQuery for VS Code
 
-Full developer tooling for the [zQuery (zero-query)](https://github.com/tonywied17/zero-query) frontend library — autocomplete, hover documentation, HTML directive support, and **140+ code snippets**.
+Full developer tooling for the [zQuery (zero-query)](https://github.com/tonywied17/zero-query) frontend library — autocomplete, hover documentation, HTML directive support, and **155+ code snippets**.
 
 ---
 
@@ -12,7 +12,7 @@ Type `$.` anywhere in JavaScript or TypeScript to instantly see every method on 
 
 - **Namespace completions** — `$.*`, `$.http.*`, `$.storage.*`, `$.session.*`, `$.bus.*`
 - **Collection chain completions** — `$.all('selector').` suggests 50+ chainable methods
-- **Component key completions** — Inside `$.component({})` get suggestions for `state`, `mount`, `render`, `methods`, lifecycle hooks, and more
+- **Component key completions** — Inside `$.component({})` get suggestions for `state`, `render`, `styles`, `templateUrl`, `styleUrl`, `pages`, `base`, `computed`, `watch`, lifecycle hooks, and more
 - **HTML directive completions** — `@` triggers event directives, `z-` triggers structural directives, `:` triggers attribute binding shorthands
 
 ### Hover Documentation
@@ -27,7 +27,7 @@ Hover over any `$` method call or HTML directive to see rich inline documentatio
 
 ### Code Snippets
 
-**140+ snippets** covering the entire zQuery API — type `zq-` to browse them all.
+**155+ snippets** covering the entire zQuery API — type `zq-` to browse them all.
 
 ---
 
@@ -96,6 +96,8 @@ Hover over any `$` method call or HTML directive to see rich inline documentatio
 | `zq-components` | List all registered component definitions |
 | `zq-setstate` | Merge partial state (triggers re-render) |
 | `zq-emit` | Dispatch a CustomEvent from the component root |
+| `zq-component-computed` | Component with computed properties (lazy getters derived from state) |
+| `zq-component-watch` | Component with watchers (callbacks when state keys change) |
 
 ### Router
 
@@ -159,6 +161,8 @@ Hover over any `$` method call or HTML directive to see rich inline documentatio
 | `zq-isequal` | Deep equality comparison |
 | `zq-param` | Serialize object to query string |
 | `zq-parsequery` | Parse query string to object |
+| `zq-morph` | Patch a live DOM tree via real-DOM diffing |
+| `zq-safeeval` | CSP-safe expression evaluator (no eval/new Function) |
 
 ### Storage & Event Bus
 
@@ -199,6 +203,7 @@ Hover over any `$` method call or HTML directive to see rich inline documentatio
 | `z-show` | Toggle visibility via `display:none` (stays in DOM) |
 | `z-cloak` | Hide until rendered — prevents template flash |
 | `z-pre` | Skip directive processing for element and children |
+| `z-key` | Keyed reconciliation attribute for `z-for` loops |
 
 ### Data Binding Directives
 
@@ -222,6 +227,13 @@ Hover over any `$` method call or HTML directive to see rich inline documentatio
 | `z-link` | SPA navigation link |
 | `z-on` | Event binding (`z-on:event` form) |
 | `z-on-mod` | Event binding with modifier |
+
+### Slots
+
+| Prefix | Description |
+|--------|-------------|
+| `zq-slot` | Default slot for content distribution |
+| `zq-slot-named` | Named slot for targeted content distribution |
 
 ### Event Bindings
 
@@ -253,6 +265,7 @@ Hover over any `$` method call or HTML directive to see rich inline documentatio
 | `zq-expr` | Template expression (`{{…}}`) |
 | `zq-if` | Conditional rendering (ternary) |
 | `zq-list` | List rendering (map/join) |
+| `zq-for-key` | `z-for` loop with `z-key` for keyed DOM reconciliation |
 
 ### Forms
 
