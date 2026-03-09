@@ -1,6 +1,6 @@
 # zQuery for VS Code
 
-Full developer tooling for the [zQuery (zero-query)](https://github.com/tonywied17/zero-query) frontend library — autocomplete, hover documentation, HTML directive support, and **155+ code snippets**.
+Full developer tooling for the [zQuery (zero-query)](https://github.com/tonywied17/zero-query) frontend library — autocomplete, hover documentation, HTML directive support, and **185+ code snippets**.
 
 ---
 
@@ -11,7 +11,7 @@ Full developer tooling for the [zQuery (zero-query)](https://github.com/tonywied
 Type `$.` anywhere in JavaScript or TypeScript to instantly see every method on the `$` namespace — complete with descriptions, signatures, and smart insert text.
 
 - **Namespace completions** — `$.*`, `$.http.*`, `$.storage.*`, `$.session.*`, `$.bus.*`
-- **Collection chain completions** — `$('selector').` and `$.all('selector').` suggest 50+ chainable methods
+- **Collection chain completions** — `$('selector').` and `$.all('selector').` suggest 90+ chainable methods
 - **Component key completions** — Inside `$.component({})` get suggestions for `state`, `render`, `styles`, `templateUrl`, `styleUrl`, `pages`, `base`, `computed`, `watch`, lifecycle hooks, and more
 - **HTML directive completions** — `@` triggers event directives, `z-` triggers structural directives, `:` triggers attribute binding shorthands
 
@@ -27,7 +27,7 @@ Hover over any `$` method call or HTML directive to see rich inline documentatio
 
 ### Code Snippets
 
-**155+ snippets** covering the entire zQuery API — type `zq-` to browse them all.
+**185+ snippets** covering the entire zQuery API — type `zq-` to browse them all.
 
 ---
 

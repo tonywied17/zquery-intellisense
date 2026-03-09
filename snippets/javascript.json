@@ -910,5 +910,173 @@
       "});"
     ],
     "description": "Component with watchers — run callbacks when state keys change."
+  },
+
+  "_comment_collection_new": "──── New Collection Methods ────",
+
+  "zQuery parents": {
+    "prefix": "zq-parents",
+    "body": [".parents('${1:selector}')"],
+    "description": "All ancestor elements, optionally filtered by selector."
+  },
+  "zQuery parentsUntil": {
+    "prefix": "zq-parentsuntil",
+    "body": [".parentsUntil('${1:selector}')"],
+    "description": "Ancestors up to (but not including) the element matching selector."
+  },
+  "zQuery nextAll": {
+    "prefix": "zq-nextall",
+    "body": [".nextAll('${1:selector}')"],
+    "description": "All following siblings, optionally filtered by selector."
+  },
+  "zQuery nextUntil": {
+    "prefix": "zq-nextuntil",
+    "body": [".nextUntil('${1:selector}')"],
+    "description": "Following siblings until the selector is matched."
+  },
+  "zQuery prevAll": {
+    "prefix": "zq-prevall",
+    "body": [".prevAll('${1:selector}')"],
+    "description": "All preceding siblings, optionally filtered by selector."
+  },
+  "zQuery prevUntil": {
+    "prefix": "zq-prevuntil",
+    "body": [".prevUntil('${1:selector}')"],
+    "description": "Preceding siblings until the selector is matched."
+  },
+  "zQuery contents": {
+    "prefix": "zq-contents",
+    "body": [".contents()"],
+    "description": "All child nodes (including text nodes) of each element."
+  },
+  "zQuery is": {
+    "prefix": "zq-is",
+    "body": [".is('${1:selector}')"],
+    "description": "Test whether any element matches the selector."
+  },
+  "zQuery slice": {
+    "prefix": "zq-slice",
+    "body": [".slice(${1:0}, ${2:3})"],
+    "description": "Return a subset of elements from start to end index."
+  },
+  "zQuery add": {
+    "prefix": "zq-add",
+    "body": [".add('${1:selector}')"],
+    "description": "Create a new collection with additional elements added."
+  },
+  "zQuery get": {
+    "prefix": "zq-get-element",
+    "body": [".get(${1:0})"],
+    "description": "Get raw element at index, or all elements as array if no argument."
+  },
+  "zQuery index": {
+    "prefix": "zq-index",
+    "body": [".index()"],
+    "description": "Return the index of the first element within its siblings."
+  },
+  "zQuery appendTo": {
+    "prefix": "zq-appendto",
+    "body": [".appendTo('${1:target}')"],
+    "description": "Append all elements to the target element."
+  },
+  "zQuery prependTo": {
+    "prefix": "zq-prependto",
+    "body": [".prependTo('${1:target}')"],
+    "description": "Prepend all elements to the target element."
+  },
+  "zQuery insertAfter": {
+    "prefix": "zq-insertafter",
+    "body": [".insertAfter('${1:target}')"],
+    "description": "Insert all elements after the target element."
+  },
+  "zQuery insertBefore": {
+    "prefix": "zq-insertbefore",
+    "body": [".insertBefore('${1:target}')"],
+    "description": "Insert all elements before the target element."
+  },
+  "zQuery replaceAll": {
+    "prefix": "zq-replaceall",
+    "body": [".replaceAll('${1:target}')"],
+    "description": "Replace all target elements with the collection elements."
+  },
+  "zQuery wrapAll": {
+    "prefix": "zq-wrapall",
+    "body": [".wrapAll('${1:<div class=\"wrapper\"></div>}')"],
+    "description": "Wrap all elements in a single wrapper."
+  },
+  "zQuery wrapInner": {
+    "prefix": "zq-wrapinner",
+    "body": [".wrapInner('${1:<div class=\"inner\"></div>}')"],
+    "description": "Wrap the inner contents of each element."
+  },
+  "zQuery unwrap": {
+    "prefix": "zq-unwrap",
+    "body": [".unwrap()"],
+    "description": "Remove the parent element of each element."
+  },
+  "zQuery detach": {
+    "prefix": "zq-detach",
+    "body": [".detach()"],
+    "description": "Remove elements from DOM (keeps reference for reinsertion)."
+  },
+  "zQuery innerWidth": {
+    "prefix": "zq-innerwidth",
+    "body": [".innerWidth()"],
+    "description": "First element's inner width (clientWidth — includes padding, excludes border)."
+  },
+  "zQuery innerHeight": {
+    "prefix": "zq-innerheight",
+    "body": [".innerHeight()"],
+    "description": "First element's inner height (clientHeight — includes padding, excludes border)."
+  },
+  "zQuery outerWidth": {
+    "prefix": "zq-outerwidth",
+    "body": [".outerWidth(${1:false})"],
+    "description": "First element's outer width including border. Pass true to include margins."
+  },
+  "zQuery outerHeight": {
+    "prefix": "zq-outerheight",
+    "body": [".outerHeight(${1:false})"],
+    "description": "First element's outer height including border. Pass true to include margins."
+  },
+  "zQuery scrollTop": {
+    "prefix": "zq-scrolltop",
+    "body": [".scrollTop(${1})"],
+    "description": "Get or set vertical scroll position."
+  },
+  "zQuery scrollLeft": {
+    "prefix": "zq-scrollleft",
+    "body": [".scrollLeft(${1})"],
+    "description": "Get or set horizontal scroll position."
+  },
+  "zQuery slideDown": {
+    "prefix": "zq-slidedown",
+    "body": [".slideDown(${1:300})"],
+    "description": "Slide open — animate height from 0 to natural height."
+  },
+  "zQuery slideUp": {
+    "prefix": "zq-slideup",
+    "body": [".slideUp(${1:300})"],
+    "description": "Slide closed — animate height to 0 then hide."
+  },
+  "zQuery fadeToggle": {
+    "prefix": "zq-fadetoggle",
+    "body": [".fadeToggle(${1:300})"],
+    "description": "Toggle fade — fade out visible elements, fade in hidden ones."
+  },
+  "zQuery fadeTo": {
+    "prefix": "zq-fadeto",
+    "body": [".fadeTo(${1:300}, ${2:0.5})"],
+    "description": "Fade to a specific opacity value."
+  },
+  "zQuery hover": {
+    "prefix": "zq-hover",
+    "body": [
+      ".hover(",
+      "\t(e) => { $1 },",
+      "\t(e) => { $2 }",
+      ")"
+    ],
+    "description": "Bind mouseenter and mouseleave handlers."
   }
 }
