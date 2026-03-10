@@ -145,7 +145,7 @@ const HTML_SELECTOR = [
 /**
  * Provides completions for zQuery HTML directives:
  *   @event  — event binding directives (@click, @submit, etc.)
- *   z-*     — z-model, z-ref, z-link, z-lazy, z-trim, z-number
+ *   z-*     — z-model, z-ref, z-link, z-to-top, z-lazy, z-trim, z-number
  */
 const htmlDirectiveProvider = {
   provideCompletionItems(document, position) {

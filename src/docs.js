@@ -1008,6 +1008,16 @@ const zDirectives = [
       '```html\n<a z-for="user in users"\n   z-link="/user/:id"\n   z-link-params=\'{"id": "${user.id}"}\'>\n  ${user.name}\n</a>\n```',
     insertText: 'z-link-params=\'{"$1": "$2"}\'',
   },
+  {
+    name: 'z-to-top',
+    detail: 'Scroll to Top on Navigation',
+    documentation:
+      'Modifier for `z-link` — scrolls the page to the top after SPA navigation. ' +
+      'Uses instant scroll to avoid visual jitter when navigating between pages with different content heights.\n\n' +
+      '```html\n<a z-link="/" z-to-top>Home</a>\n<a z-link="/about" z-to-top>About</a>\n```\n\n' +
+      'Omit `z-to-top` to preserve scroll position across navigations (useful for tabs or sub-views).',
+    insertText: 'z-to-top',
+  },
   // -- Utility Directives --------------------------------------------------
   {
     name: 'z-cloak',

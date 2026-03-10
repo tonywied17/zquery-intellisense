@@ -229,6 +229,7 @@ Hover over any `$` method call or HTML directive to see rich inline documentatio
 | `z-ref` | Element reference (`this.refs.name`) |
 | `z-link` | SPA navigation link |
 | `z-link-params` | SPA link with dynamic `:param` interpolation |
+| `z-to-top` | Scroll to top on navigation (modifier for `z-link`) |
 | `z-on` | Event binding (`z-on:event` form) |
 | `z-on-mod` | Event binding with modifier |
 

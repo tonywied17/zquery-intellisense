@@ -230,6 +230,13 @@
     ],
     "description": "zQuery z-link with dynamic :param interpolation via z-link-params."
   },
+  "z-to-top (Scroll Modifier)": {
+    "prefix": "z-to-top",
+    "body": [
+      "<a z-link=\"${1:/path}\" z-to-top>${2:Link Text}</a>"
+    ],
+    "description": "zQuery z-link with z-to-top modifier — scrolls to top after navigation."
+  },
 
   "_comment_events": "──── @ Event Bindings ────",
 
