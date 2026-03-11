@@ -233,9 +233,9 @@
   "z-to-top (Scroll Modifier)": {
     "prefix": "z-to-top",
     "body": [
-      "<a z-link=\"${1:/path}\" z-to-top>${2:Link Text}</a>"
+      "<a z-link=\"${1:/path}\" z-to-top=\"${2|instant,smooth|}\">${3:Link Text}</a>"
     ],
-    "description": "zQuery z-link with z-to-top modifier — scrolls to top after navigation."
+    "description": "zQuery z-link with z-to-top modifier — scrolls to top after navigation. Accepts 'instant' (default) or 'smooth'."
   },
 
   "_comment_events": "──── @ Event Bindings ────",

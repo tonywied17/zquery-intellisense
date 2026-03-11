@@ -232,4 +232,8 @@ function registerHoverProviders(context) {
   );
 }
 
-module.exports = { registerHoverProviders };
+module.exports = {
+  registerHoverProviders,
+  // Exported for testing
+  _test: { getExtendedWord, buildHover },
+};

@@ -1,6 +1,6 @@
 # zQuery for VS Code
 
-Full developer tooling for the [zQuery (zero-query)](https://github.com/tonywied17/zero-query) frontend library — autocomplete, hover documentation, HTML directive support, and **190+ code snippets**.
+Full developer tooling for the [zQuery (zero-query)](https://github.com/tonywied17/zero-query) frontend library — autocomplete, hover documentation, go-to-definition, HTML directive support, syntax highlighting, and **200+ code snippets**.
 
 ---
 
@@ -8,9 +8,9 @@ Full developer tooling for the [zQuery (zero-query)](https://github.com/tonywied
 
 ### Autocomplete
 
-Type `$.` anywhere in JavaScript or TypeScript to instantly see every method on the `$` namespace — complete with descriptions, signatures, and smart insert text.
+Type `$.` or `zQuery.` anywhere in JavaScript or TypeScript to instantly see every method on the `$` namespace — complete with descriptions, signatures, and smart insert text.
 
-- **Namespace completions** — `$.*`, `$.http.*`, `$.storage.*`, `$.session.*`, `$.bus.*`
+- **Namespace completions** — `$.*` / `zQuery.*`, `$.http.*`, `$.storage.*`, `$.session.*`, `$.bus.*`
 - **Collection chain completions** — `$('selector').`, `$.all('selector').`, `$.create('tag').`, `$.classes('name').`, `$.tag('div').`, `$.name('field').`, and `$.children('id').` suggest 90+ chainable methods
 - **Component key completions** — Inside `$.component({})` get suggestions for `state`, `render`, `styles`, `templateUrl`, `styleUrl`, `pages`, `base`, `computed`, `watch`, lifecycle hooks, and more
 - **HTML directive completions** — `@` triggers event directives, `z-` triggers structural directives, `:` triggers attribute binding shorthands
@@ -19,15 +19,33 @@ Type `$.` anywhere in JavaScript or TypeScript to instantly see every method on 
 
 Hover over any `$` method call or HTML directive to see rich inline documentation with code examples.
 
-- `$`, `$.id`, `$.class`, `$.name`, `$.all`, `$.component`, `$.mount`, `$.http.get`, `$.storage.get`, `$.bus.on`, and more
+- `$`, `$.id`, `$.class`, `$.name`, `$.all`, `$.component`, `$.mount`, `$.http.get`, `$.http.raw`, `$.storage.get`, `$.bus.on`, `$.fn`, `$.version`, `$.meta`, `$.onError`, `$.ZQueryError`, `$.ErrorCode`, and more
 - **Structural directives** — `z-if`, `z-else-if`, `z-else`, `z-for`, `z-show`, `z-cloak`, `z-pre`
 - **Data binding directives** — `z-bind` / `:attr`, `z-class`, `z-style`, `z-text`, `z-html`, `z-model`, `z-ref`
 - **Event directives** — `@click`, `z-on:click`, `@submit.prevent`, and all event modifiers (`.prevent`, `.stop`, `.once`, `.self`, `.capture`, `.passive`, `.debounce.{ms}`, `.throttle.{ms}`)
 - Works across **JavaScript**, **TypeScript**, and **HTML** files
 
+### Go-to-Definition
+
+**Ctrl+Click** (or **F12**) on a state property referenced in a template expression to jump to its definition inside `$.component()`.
+
+- Works inside `{{…}}` interpolations and directive attribute values (`z-if`, `z-for`, `@click`, `:href`, etc.)
+- Resolves across **JS/TS files** (inline templates) and **external HTML templates** loaded via `templateUrl`
+
+### Document Links
+
+`templateUrl` and `styleUrl` string values inside component definitions are **Ctrl+clickable** — they open the referenced file directly.
+
+### Syntax Highlighting
+
+Injects TextMate grammar into HTML files for:
+
+- `{{…}}` template interpolation expressions
+- zQuery directives (`z-if`, `z-for`, `z-bind`, `z-model`, `@click`, etc.)
+
 ### Code Snippets
 
-**190+ snippets** covering the entire zQuery API — type `zq-` to browse them all.
+**200+ snippets** covering the entire zQuery API — type `zq-` to browse them all.
 
 ---
 
@@ -63,6 +81,63 @@ Hover over any `$` method call or HTML directive to see rich inline documentatio
 | `zq-all-slidetoggle` | Toggle height with slide animation |
 | `zq-serialize` | Serialize form data as key/value object |
 | `zq-plugin` | Extend `ZQueryCollection` with a custom method |
+| `zq-get-element` | Get raw element at index, or all elements as array |
+| `zq-index` | Return the index of the first element within its siblings |
+
+### Traversal
+
+| Prefix | Description |
+|--------|-------------|
+| `zq-parents` | All ancestor elements, optionally filtered by selector |
+| `zq-parentsuntil` | Ancestors up to (but not including) the matching element |
+| `zq-nextall` | All following siblings, optionally filtered |
+| `zq-nextuntil` | Following siblings until the selector is matched |
+| `zq-prevall` | All preceding siblings, optionally filtered |
+| `zq-prevuntil` | Preceding siblings until the selector is matched |
+| `zq-contents` | All child nodes (including text nodes) of each element |
+
+### Filtering
+
+| Prefix | Description |
+|--------|-------------|
+| `zq-is` | Test whether any element matches the selector |
+| `zq-slice` | Return a subset of elements from start to end index |
+| `zq-add` | Create a new collection with additional elements added |
+
+### DOM Manipulation
+
+| Prefix | Description |
+|--------|-------------|
+| `zq-appendto` | Append all elements to the target element |
+| `zq-prependto` | Prepend all elements to the target element |
+| `zq-insertafter` | Insert all elements after the target element |
+| `zq-insertbefore` | Insert all elements before the target element |
+| `zq-replaceall` | Replace all target elements with the collection elements |
+| `zq-wrapall` | Wrap all elements in a single wrapper |
+| `zq-wrapinner` | Wrap the inner contents of each element |
+| `zq-unwrap` | Remove the parent element of each element |
+| `zq-detach` | Remove elements from DOM (keeps reference for reinsertion) |
+
+### Dimensions & Scroll
+
+| Prefix | Description |
+|--------|-------------|
+| `zq-innerwidth` | First element's inner width (padding, no border) |
+| `zq-innerheight` | First element's inner height (padding, no border) |
+| `zq-outerwidth` | First element's outer width including border |
+| `zq-outerheight` | First element's outer height including border |
+| `zq-scrolltop` | Get or set vertical scroll position |
+| `zq-scrollleft` | Get or set horizontal scroll position |
+
+### Animation
+
+| Prefix | Description |
+|--------|-------------|
+| `zq-fadeto` | Fade to a specific opacity value |
+| `zq-fadetoggle` | Toggle fade — fade out visible, fade in hidden |
+| `zq-slidedown` | Slide open (animate height from 0 to natural) |
+| `zq-slideup` | Slide closed (animate height to 0 then hide) |
+| `zq-hover` | Bind mouseenter and mouseleave handlers |
 
 ### Events
 
@@ -229,7 +304,7 @@ Hover over any `$` method call or HTML directive to see rich inline documentatio
 | `z-ref` | Element reference (`this.refs.name`) |
 | `z-link` | SPA navigation link |
 | `z-link-params` | SPA link with dynamic `:param` interpolation |
-| `z-to-top` | Scroll to top on navigation (modifier for `z-link`) |
+| `z-to-top` | Scroll to top on navigation — accepts `"instant"` (default) or `"smooth"` |
 | `z-on` | Event binding (`z-on:event` form) |
 | `z-on-mod` | Event binding with modifier |
 

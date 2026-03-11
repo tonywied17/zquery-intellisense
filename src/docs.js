@@ -1013,10 +1013,11 @@ const zDirectives = [
     detail: 'Scroll to Top on Navigation',
     documentation:
       'Modifier for `z-link` — scrolls the page to the top after SPA navigation. ' +
-      'Uses instant scroll to avoid visual jitter when navigating between pages with different content heights.\n\n' +
-      '```html\n<a z-link="/" z-to-top>Home</a>\n<a z-link="/about" z-to-top>About</a>\n```\n\n' +
+      'Accepts an optional value of `"instant"` (default) or `"smooth"`.\n\n' +
+      '```html\n<!-- Instant scroll (default) -->\n<a z-link="/" z-to-top>Home</a>\n<a z-link="/about" z-to-top="instant">About</a>\n\n' +
+      '<!-- Smooth scroll -->\n<a z-link="/docs" z-to-top="smooth">Docs</a>\n```\n\n' +
       'Omit `z-to-top` to preserve scroll position across navigations (useful for tabs or sub-views).',
-    insertText: 'z-to-top',
+    insertText: 'z-to-top="${1|instant,smooth|}"',
   },
   // -- Utility Directives --------------------------------------------------
   {

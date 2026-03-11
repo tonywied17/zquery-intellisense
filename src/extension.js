@@ -5,6 +5,8 @@
 const vscode = require('vscode');
 const { registerCompletionProviders } = require('./completions');
 const { registerHoverProviders } = require('./hovers');
+const { registerDefinitionProviders } = require('./definitions');
+const { registerLinkProviders } = require('./links');
 
 /**
  * @param {vscode.ExtensionContext} context
@@ -12,6 +14,8 @@ const { registerHoverProviders } = require('./hovers');
 function activate(context) {
   registerCompletionProviders(context);
   registerHoverProviders(context);
+  registerDefinitionProviders(context);
+  registerLinkProviders(context);
 
   // Log activation (visible in Output > "Extension Host")
   const outputChannel = vscode.window.createOutputChannel('zQuery');

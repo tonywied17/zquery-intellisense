@@ -234,4 +234,8 @@ function registerCompletionProviders(context) {
   );
 }
 
-module.exports = { registerCompletionProviders };
+module.exports = {
+  registerCompletionProviders,
+  // Exported for testing
+  _test: { isInsideTag, toCompletion },
+};
