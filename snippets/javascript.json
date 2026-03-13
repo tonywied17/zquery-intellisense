@@ -875,12 +875,197 @@
     ],
     "description": "Patch a live DOM tree to match new HTML via real-DOM diffing. Preserves focus, scroll, and form state."
   },
+  "zQuery morphElement": {
+    "prefix": "zq-morphelement",
+    "body": [
+      "const ${1:result} = $.morphElement(${2:element}, '${3:newHTML}');"
+    ],
+    "description": "Morph a single element in place — diffs attributes and children without replacing the node reference."
+  },
   "zQuery safeEval": {
     "prefix": "zq-safeeval",
     "body": [
       "const ${1:result} = $.safeEval('${2:expression}', [${3:scope}]);"
     ],
     "description": "CSP-safe expression evaluator — parse and evaluate JS expressions without eval() or new Function()."
+  },
+  "zQuery prefetch": {
+    "prefix": "zq-prefetch",
+    "body": [
+      "await $.prefetch('${1:component-name}');"
+    ],
+    "description": "Pre-load external templates and styles for a registered component."
+  },
+  "zQuery qs": {
+    "prefix": "zq-qs",
+    "body": [
+      "const ${1:el} = $.qs('${2:selector}');"
+    ],
+    "description": "Raw querySelector — any CSS selector. Returns Element | null."
+  },
+  "zQuery qsa": {
+    "prefix": "zq-qsa",
+    "body": [
+      "const ${1:elements} = $.qsa('${2:selector}');"
+    ],
+    "description": "Raw querySelectorAll — returns a real Array<Element> with full Array methods."
+  },
+
+  "_comment_error_handling": "──── Error Handling ────",
+
+  "zQuery onError": {
+    "prefix": "zq-onerror",
+    "body": [
+      "$.onError((err) => {",
+      "\tconsole.error(`[\\${err.code}]`, err.message, err.context);",
+      "\t${1}",
+      "});"
+    ],
+    "description": "Register a global error handler for zQuery errors."
+  },
+  "zQuery ZQueryError Check": {
+    "prefix": "zq-error-check",
+    "body": [
+      "try {",
+      "\t${1}",
+      "} catch (err) {",
+      "\tif (err instanceof $.ZQueryError) {",
+      "\t\tconsole.log(err.code, err.context);",
+      "\t}",
+      "}"
+    ],
+    "description": "Try/catch with ZQueryError instance check."
+  },
+  "zQuery guardCallback": {
+    "prefix": "zq-guardcallback",
+    "body": [
+      "const ${1:safeFn} = $.guardCallback(${2:fn}, $.ErrorCode.${3:EFFECT_EXEC});"
+    ],
+    "description": "Wrap a function so thrown errors are caught and reported without crashing."
+  },
+  "zQuery validate": {
+    "prefix": "zq-validate",
+    "body": [
+      "$.validate(${1:value}, '${2:name}', '${3:string}');"
+    ],
+    "description": "Assert a value is non-null and optionally the expected type."
+  },
+
+  "_comment_new_utilities": "──── New Utilities ────",
+
+  "zQuery stripHtml": {
+    "prefix": "zq-striphtml",
+    "body": [
+      "$.stripHtml(${1:str})"
+    ],
+    "description": "Strip all HTML tags from a string, returning only text content."
+  },
+  "zQuery range": {
+    "prefix": "zq-range",
+    "body": [
+      "const ${1:arr} = $.range(${2:5});"
+    ],
+    "description": "Generate a numeric range. range(5) → [0,1,2,3,4]. range(2,6) → [2,3,4,5]."
+  },
+  "zQuery unique": {
+    "prefix": "zq-unique",
+    "body": [
+      "const ${1:arr} = $.unique(${2:array});"
+    ],
+    "description": "Deduplicate an array. Optional key function for object identity."
+  },
+  "zQuery chunk": {
+    "prefix": "zq-chunk",
+    "body": [
+      "const ${1:chunks} = $.chunk(${2:array}, ${3:size});"
+    ],
+    "description": "Split an array into chunks of specified size."
+  },
+  "zQuery groupBy": {
+    "prefix": "zq-groupby",
+    "body": [
+      "const ${1:groups} = $.groupBy(${2:array}, ${3:item} => ${3}.${4:key});"
+    ],
+    "description": "Group array elements by a key function."
+  },
+  "zQuery pick": {
+    "prefix": "zq-pick",
+    "body": [
+      "const ${1:subset} = $.pick(${2:obj}, [${3:'key1', 'key2'}]);"
+    ],
+    "description": "Pick specified keys from an object."
+  },
+  "zQuery omit": {
+    "prefix": "zq-omit",
+    "body": [
+      "const ${1:rest} = $.omit(${2:obj}, [${3:'key1'}]);"
+    ],
+    "description": "Omit specified keys from an object."
+  },
+  "zQuery getPath": {
+    "prefix": "zq-getpath",
+    "body": [
+      "const ${1:val} = $.getPath(${2:obj}, '${3:path.to.key}');"
+    ],
+    "description": "Get a deeply nested value by dot-path string."
+  },
+  "zQuery setPath": {
+    "prefix": "zq-setpath",
+    "body": [
+      "$.setPath(${1:obj}, '${2:path.to.key}', ${3:value});"
+    ],
+    "description": "Set a deeply nested value by dot-path string. Creates intermediate objects."
+  },
+  "zQuery isEmpty": {
+    "prefix": "zq-isempty",
+    "body": [
+      "$.isEmpty(${1:value})"
+    ],
+    "description": "Check if a value is empty — null, undefined, '', [], {}, or empty Map/Set."
+  },
+  "zQuery capitalize": {
+    "prefix": "zq-capitalize",
+    "body": [
+      "$.capitalize('${1:str}')"
+    ],
+    "description": "Capitalize the first letter and lowercase the rest."
+  },
+  "zQuery truncate": {
+    "prefix": "zq-truncate",
+    "body": [
+      "$.truncate(${1:str}, ${2:maxLen})"
+    ],
+    "description": "Truncate a string with a suffix (default '…')."
+  },
+  "zQuery clamp": {
+    "prefix": "zq-clamp",
+    "body": [
+      "$.clamp(${1:value}, ${2:min}, ${3:max})"
+    ],
+    "description": "Clamp a number between min and max (inclusive)."
+  },
+  "zQuery memoize": {
+    "prefix": "zq-memoize",
+    "body": [
+      "const ${1:cached} = $.memoize(${2:fn});"
+    ],
+    "description": "Memoize a function. Optional key function or { maxSize } for LRU. Has .clear()."
+  },
+  "zQuery retry": {
+    "prefix": "zq-retry",
+    "body": [
+      "const ${1:result} = await $.retry(async (attempt) => {",
+      "\t${2}",
+      "}, { attempts: ${3:3}, delay: ${4:1000} });"
+    ],
+    "description": "Retry an async function with configurable backoff."
+  },
+  "zQuery timeout": {
+    "prefix": "zq-timeout",
+    "body": [
+      "const ${1:result} = await $.timeout(${2:promise}, ${3:5000});"
+    ],
+    "description": "Race a promise against a timeout. Rejects with Error if timeout reached."
   },
   "zQuery Component with Computed": {
     "prefix": "zq-component-computed",
