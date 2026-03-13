@@ -1,6 +1,6 @@
 # zQuery for VS Code
 
-Full developer tooling for the [zQuery (zero-query)](https://github.com/tonywied17/zero-query) frontend library — autocomplete, hover documentation, go-to-definition, HTML directive support, syntax highlighting, and **200+ code snippets**.
+Full developer tooling for the [zQuery (zero-query)](https://github.com/tonywied17/zero-query) frontend library — autocomplete, hover documentation, go-to-definition, HTML directive support, syntax highlighting, and **217 code snippets**.
 
 ---
 
@@ -19,8 +19,9 @@ Type `$.` or `zQuery.` anywhere in JavaScript or TypeScript to instantly see eve
 
 Hover over any `$` method call or HTML directive to see rich inline documentation with code examples.
 
-- `$`, `$.id`, `$.class`, `$.name`, `$.all`, `$.component`, `$.mount`, `$.http.get`, `$.http.raw`, `$.storage.get`, `$.bus.on`, `$.fn`, `$.version`, `$.meta`, `$.onError`, `$.ZQueryError`, `$.ErrorCode`, and more
-- **Structural directives** — `z-if`, `z-else-if`, `z-else`, `z-for`, `z-show`, `z-cloak`, `z-pre`
+- `$`, `$.id`, `$.class`, `$.qs`, `$.qsa`, `$.name`, `$.all`, `$.component`, `$.mount`, `$.http.get`, `$.http.raw`, `$.storage.get`, `$.bus.on`, `$.fn`, `$.version`, `$.meta`, `$.onError`, `$.ZQueryError`, `$.ErrorCode`, `$.Signal`, `$.TrustedHTML`, `$.EventBus`, and more
+- **New utilities** — `$.range`, `$.unique`, `$.chunk`, `$.groupBy`, `$.pick`, `$.omit`, `$.getPath`, `$.setPath`, `$.isEmpty`, `$.capitalize`, `$.truncate`, `$.clamp`, `$.memoize`, `$.retry`, `$.timeout`, `$.stripHtml`
+- **Structural directives** — `z-if`, `z-else-if`, `z-else`, `z-for`, `z-show`, `z-cloak`, `z-pre`, `z-skip`
 - **Data binding directives** — `z-bind` / `:attr`, `z-class`, `z-style`, `z-text`, `z-html`, `z-model`, `z-ref`
 - **Event directives** — `@click`, `z-on:click`, `@submit.prevent`, and all event modifiers (`.prevent`, `.stop`, `.once`, `.self`, `.capture`, `.passive`, `.debounce.{ms}`, `.throttle.{ms}`)
 - Works across **JavaScript**, **TypeScript**, and **HTML** files
@@ -45,7 +46,7 @@ Injects TextMate grammar into HTML files for:
 
 ### Code Snippets
 
-**200+ snippets** covering the entire zQuery API — type `zq-` to browse them all.
+**217 snippets** covering the entire zQuery API — type `zq-` to browse them all.
 
 ---
 
@@ -63,6 +64,8 @@ Injects TextMate grammar into HTML files for:
 | `zq-bytag` | Select all elements by tag name → `ZQueryCollection` |
 | `zq-name` | Select elements by name attribute → `ZQueryCollection` |
 | `zq-children` | Direct children of a parent element → `ZQueryCollection` |
+| `zq-qs` | Raw `querySelector` — any CSS selector → `Element \| null` |
+| `zq-qsa` | Raw `querySelectorAll` → real `Array<Element>` |
 | `zq-all` | Query all matching elements and chain — alias for `$()` |
 | `zq-create` | Create a DOM element with attributes → `ZQueryCollection` (chainable) |
 | `zq-domready` | DOM-ready callback shorthand `$(fn)` |
@@ -230,6 +233,7 @@ Injects TextMate grammar into HTML files for:
 | `zq-sleep` | Promise that resolves after N ms |
 | `zq-uuid` | Generate a UUID v4 |
 | `zq-escapehtml` | Escape HTML entities |
+| `zq-striphtml` | Strip HTML tags from string |
 | `zq-html-safe` | Tagged template with auto-escaping |
 | `zq-trust` | Mark HTML as trusted (skip escaping) |
 | `zq-camelcase` | kebab-case → camelCase |
@@ -240,7 +244,24 @@ Injects TextMate grammar into HTML files for:
 | `zq-param` | Serialize object to query string |
 | `zq-parsequery` | Parse query string to object |
 | `zq-morph` | Patch a live DOM tree via real-DOM diffing |
+| `zq-morphelement` | Morph a single element in place |
 | `zq-safeeval` | CSP-safe expression evaluator (no eval/new Function) |
+| `zq-prefetch` | Pre-load component templates and styles |
+| `zq-range` | Generate a numeric range array |
+| `zq-unique` | Deduplicate an array |
+| `zq-chunk` | Split array into chunks |
+| `zq-groupby` | Group array elements by key function |
+| `zq-pick` | Pick keys from an object |
+| `zq-omit` | Omit keys from an object |
+| `zq-getpath` | Deep get by dot-path string |
+| `zq-setpath` | Deep set by dot-path string |
+| `zq-isempty` | Check if value is empty |
+| `zq-capitalize` | Capitalize first letter |
+| `zq-truncate` | Truncate string with suffix |
+| `zq-clamp` | Clamp number between min/max |
+| `zq-memoize` | Memoize a function (with optional LRU) |
+| `zq-retry` | Retry async function with backoff |
+| `zq-timeout` | Race promise against a timeout |
 
 ### Storage & Event Bus
 
@@ -263,6 +284,15 @@ Injects TextMate grammar into HTML files for:
 | `zq-import` | Import zQuery named exports (ESM) |
 | `zq-noconflict` | Remove `$` from window and return zQuery |
 
+### Error Handling
+
+| Prefix | Description |
+|--------|-------------|
+| `zq-onerror` | Register a global error handler |
+| `zq-error-check` | Try/catch with `ZQueryError` check |
+| `zq-guardcallback` | Wrap function so errors are caught and reported |
+| `zq-validate` | Assert value is non-null and expected type |
+
 ---
 
 ## HTML Snippets
@@ -282,6 +312,7 @@ Injects TextMate grammar into HTML files for:
 | `z-cloak` | Hide until rendered — prevents template flash |
 | `z-pre` | Skip directive processing for element and children |
 | `z-key` | Keyed reconciliation attribute for `z-for` loops |
+| `z-skip` | Opt out of DOM diffing for static content |
 
 ### Data Binding Directives
 

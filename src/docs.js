@@ -80,6 +80,24 @@ const dollarMethods = [
     insertText: "children('$1')",
   },
   {
+    name: 'qs',
+    kind: 'Function',
+    detail: '(selector, ctx?) → Element | null',
+    documentation:
+      'Raw `querySelector` — any CSS selector, optional context element. Returns a raw DOM element.\n\n' +
+      '```js\n$.qs(\'.nav-item.active\')        // raw Element\n$.qs(\'li\', navEl)               // scoped to context\n```',
+    insertText: "qs('$1')",
+  },
+  {
+    name: 'qsa',
+    kind: 'Function',
+    detail: '(selector, ctx?) → Element[]',
+    documentation:
+      'Raw `querySelectorAll` — returns a real `Array<Element>` (not a NodeList) with full Array methods.\n\n' +
+      '```js\n$.qsa(\'.card\').forEach(el => el.classList.add(\'loaded\'));\n$.qsa(\'li\', navEl)  // scoped to context\n```',
+    insertText: "qsa('$1')",
+  },
+  {
     name: 'create',
     kind: 'Function',
     detail: "(tag, attrs?, ...children) → ZQueryCollection",
@@ -407,6 +425,13 @@ const dollarMethods = [
     insertText: 'escapeHtml(${1})',
   },
   {
+    name: 'stripHtml',
+    kind: 'Function',
+    detail: '(str) → string',
+    documentation: 'Strip all HTML tags from a string, returning only the text content.\n\n```js\n$.stripHtml(\'<p>Hello <b>World</b></p>\') // \'Hello World\'\n```',
+    insertText: 'stripHtml(${1})',
+  },
+  {
     name: 'html',
     kind: 'Function',
     detail: 'tagged template → string',
@@ -521,7 +546,7 @@ const dollarMethods = [
     name: 'version',
     kind: 'Property',
     detail: 'string',
-    documentation: "Library version string (e.g. `'0.7.1'`).",
+    documentation: "Library version string (e.g. `'0.9.5'`).",
     insertText: 'version',
   },
   {
@@ -549,6 +574,25 @@ const dollarMethods = [
       'Preserves focus, scroll position, and form state. Used automatically by the component system on re-renders.\n\n' +
       '```js\nconst el = $.id(\'content\');\n$.morph(el, \'<div id="content"><p>Updated</p></div>\');\n```',
     insertText: "morph(${1:element}, '${2:newHTML}')",
+  },
+  {
+    name: 'morphElement',
+    kind: 'Function',
+    detail: '(oldEl, newHTML) → Element',
+    documentation:
+      'Morph a single element **in place** — diffs attributes and children without replacing the node reference.\n' +
+      'When the tag name matches, the element is patched (preserving identity). When the tag differs, the element is replaced.\n\n' +
+      '```js\n$.morphElement($.id(\'card\'), \'<div id="card" class="updated">New</div>\');\n```',
+    insertText: "morphElement(${1:element}, '${2:newHTML}')",
+  },
+  {
+    name: 'prefetch',
+    kind: 'Function',
+    detail: '(name) → Promise<void>',
+    documentation:
+      'Pre-load external templates and styles for a registered component. Useful for warming the cache before navigation.\n\n' +
+      '```js\n$.prefetch(\'about-page\');\n```',
+    insertText: "prefetch('${1:component-name}')",
   },
 
   // -- Expression Evaluator ------------------------------------------------
@@ -589,6 +633,210 @@ const dollarMethods = [
     detail: 'Record<string, string>',
     documentation: 'Enum-like object of all zQuery error code constants (e.g. `$.ErrorCode.ZQ_COMP_NOT_FOUND`).',
     insertText: 'ErrorCode',
+  },
+
+  // -- Constructors & Classes ----------------------------------------------
+  {
+    name: 'Signal',
+    kind: 'Function',
+    detail: 'class Signal',
+    documentation:
+      'Signal constructor class. Normally created via `$.signal()`, but available as `$.Signal` for `instanceof` checks.\n\n' +
+      '```js\nconst s = $.signal(0);\nconsole.log(s instanceof $.Signal); // true\n```',
+    insertText: 'Signal',
+  },
+  {
+    name: 'TrustedHTML',
+    kind: 'Function',
+    detail: 'class TrustedHTML',
+    documentation:
+      'TrustedHTML constructor — wrap strings to bypass `$.html` escaping. Prefer `$.trust()` shorthand.\n\n' +
+      '```js\nconst safe = new $.TrustedHTML(\'<b>Bold</b>\');\nconst out = $.html`<p>${safe}</p>`;  // not escaped\n```',
+    insertText: 'TrustedHTML',
+  },
+  {
+    name: 'EventBus',
+    kind: 'Function',
+    detail: 'class EventBus',
+    documentation:
+      'EventBus constructor — create additional event bus instances beyond the default `$.bus` singleton.\n\n' +
+      '```js\nconst myBus = new $.EventBus();\nmyBus.on(\'msg\', (data) => console.log(data));\nmyBus.emit(\'msg\', \'hello\');\n```',
+    insertText: 'EventBus',
+  },
+  {
+    name: 'libSize',
+    kind: 'Property',
+    detail: 'string',
+    documentation: "Minified library size string (e.g. `'~91 KB'`), injected at build time.",
+    insertText: 'libSize',
+  },
+
+  // -- Error Handling Helpers ----------------------------------------------
+  {
+    name: 'guardCallback',
+    kind: 'Function',
+    detail: '(fn, code, context?) → (...args) => any',
+    documentation:
+      'Wrap a function so thrown errors are caught, routed through `reportError`, and don\'t crash the current call stack.\n\n' +
+      '```js\nconst safeTick = $.guardCallback(myFn, $.ErrorCode.EFFECT_EXEC, { label: \'anim\' });\nsafeTick(); // errors are caught & reported\n```',
+    insertText: 'guardCallback(${1:fn}, $.ErrorCode.${2:EFFECT_EXEC})',
+  },
+  {
+    name: 'validate',
+    kind: 'Function',
+    detail: '(value, name, expectedType?) → void',
+    documentation:
+      'Assert a value is non-null and optionally the expected type. Throws `ZQueryError` with `INVALID_ARGUMENT` on failure.\n\n' +
+      '```js\n$.validate(name, \'name\', \'string\');   // throws if not a string\n$.validate(el, \'target\');             // throws if null/undefined\n```',
+    insertText: "validate(${1:value}, '${2:name}')",
+  },
+
+  // -- Utilities: Arrays ---------------------------------------------------
+  {
+    name: 'range',
+    kind: 'Function',
+    detail: '(startOrEnd, end?, step?) → number[]',
+    documentation:
+      'Generate a numeric range.\n\n' +
+      '```js\n$.range(5)            // [0, 1, 2, 3, 4]\n$.range(2, 6)         // [2, 3, 4, 5]\n$.range(0, 10, 3)     // [0, 3, 6, 9]\n```',
+    insertText: 'range(${1:5})',
+  },
+  {
+    name: 'unique',
+    kind: 'Function',
+    detail: '(arr, keyFn?) → T[]',
+    documentation:
+      'Deduplicate an array. Optional key function for object identity.\n\n' +
+      '```js\n$.unique([1, 2, 2, 3, 1])       // [1, 2, 3]\n$.unique(users, u => u.id)     // dedupe by id\n```',
+    insertText: 'unique(${1:arr})',
+  },
+  {
+    name: 'chunk',
+    kind: 'Function',
+    detail: '(arr, size) → T[][]',
+    documentation:
+      'Split an array into chunks of `size`.\n\n' +
+      '```js\n$.chunk([1, 2, 3, 4, 5], 2)  // [[1, 2], [3, 4], [5]]\n```',
+    insertText: 'chunk(${1:arr}, ${2:size})',
+  },
+  {
+    name: 'groupBy',
+    kind: 'Function',
+    detail: '(arr, keyFn) → Record<string, T[]>',
+    documentation:
+      'Group array elements by a key function.\n\n' +
+      '```js\n$.groupBy(items, i => i.type)  // { fruit: [...], veg: [...] }\n```',
+    insertText: 'groupBy(${1:arr}, ${2:item} => ${2}.${3:key})',
+  },
+
+  // -- Utilities: Objects (extended) ---------------------------------------
+  {
+    name: 'pick',
+    kind: 'Function',
+    detail: '(obj, keys) → Partial<T>',
+    documentation:
+      'Pick specified keys from an object.\n\n' +
+      "```js\n$.pick({ a: 1, b: 2, c: 3 }, ['a', 'c'])  // { a: 1, c: 3 }\n```",
+    insertText: "pick(${1:obj}, [${2}])",
+  },
+  {
+    name: 'omit',
+    kind: 'Function',
+    detail: '(obj, keys) → Partial<T>',
+    documentation:
+      'Omit specified keys from an object.\n\n' +
+      "```js\n$.omit({ a: 1, b: 2, c: 3 }, ['b'])  // { a: 1, c: 3 }\n```",
+    insertText: "omit(${1:obj}, [${2}])",
+  },
+  {
+    name: 'getPath',
+    kind: 'Function',
+    detail: '(obj, path, fallback?) → any',
+    documentation:
+      'Get a deeply nested value by dot-path string. Returns `fallback` if any key is missing.\n\n' +
+      "```js\n$.getPath(config, 'server.db.host')          // 'localhost'\n$.getPath(config, 'server.db.port', 5432)    // fallback\n```",
+    insertText: "getPath(${1:obj}, '${2:path}')",
+  },
+  {
+    name: 'setPath',
+    kind: 'Function',
+    detail: '(obj, path, value) → T',
+    documentation:
+      'Set a deeply nested value by dot-path string. Creates intermediate objects as needed.\n\n' +
+      "```js\n$.setPath(cfg, 'server.db.host', 'localhost');\n```",
+    insertText: "setPath(${1:obj}, '${2:path}', ${3:value})",
+  },
+  {
+    name: 'isEmpty',
+    kind: 'Function',
+    detail: '(val) → boolean',
+    documentation:
+      'Check if a value is "empty" — `null`, `undefined`, `\'\'`, `[]`, `{}`, or empty `Map`/`Set`.\n\n' +
+      '```js\n$.isEmpty(null)  // true\n$.isEmpty(\'\')    // true\n$.isEmpty([])    // true\n$.isEmpty({})    // true\n$.isEmpty(0)     // false\n```',
+    insertText: 'isEmpty(${1})',
+  },
+
+  // -- Utilities: Strings (extended) ---------------------------------------
+  {
+    name: 'capitalize',
+    kind: 'Function',
+    detail: '(str) → string',
+    documentation:
+      'Capitalize the first letter and lowercase the rest.\n\n' +
+      "```js\n$.capitalize('hello')  // 'Hello'\n$.capitalize('hELLO')  // 'Hello'\n```",
+    insertText: "capitalize('$1')",
+  },
+  {
+    name: 'truncate',
+    kind: 'Function',
+    detail: '(str, maxLen, suffix?) → string',
+    documentation:
+      "Truncate a string with a suffix (default `'…'`).\n\n" +
+      "```js\n$.truncate('Hello, World!', 8)          // 'Hello, …'\n$.truncate('Hello, World!', 8, '---')   // 'Hello---'\n```",
+    insertText: "truncate(${1:str}, ${2:maxLen})",
+  },
+
+  // -- Utilities: Numbers --------------------------------------------------
+  {
+    name: 'clamp',
+    kind: 'Function',
+    detail: '(val, min, max) → number',
+    documentation:
+      'Clamp a number between min and max (inclusive).\n\n' +
+      '```js\n$.clamp(-5, 0, 100)   // 0\n$.clamp(150, 0, 100)  // 100\n$.clamp(50, 0, 100)   // 50\n```',
+    insertText: 'clamp(${1:val}, ${2:min}, ${3:max})',
+  },
+
+  // -- Utilities: Functions (extended) -------------------------------------
+  {
+    name: 'memoize',
+    kind: 'Function',
+    detail: '(fn, keyFnOrOpts?) → MemoizedFunction',
+    documentation:
+      'Memoize a function. Accepts an optional key function or `{ maxSize }` for LRU eviction. Returns a function with `.clear()`.\n\n' +
+      '```js\nconst expensive = $.memoize(computeLayout);\nexpensive(1024);  // computes\nexpensive(1024);  // cache hit\n```',
+    insertText: 'memoize(${1:fn})',
+  },
+
+  // -- Utilities: Async ----------------------------------------------------
+  {
+    name: 'retry',
+    kind: 'Function',
+    detail: '(fn, opts?) → Promise<T>',
+    documentation:
+      'Retry an async function with configurable backoff.\n\n' +
+      '**Options:** `attempts` (default 3), `delay` (default 1000 ms), `backoff` (delay multiplier, default 1).\n\n' +
+      '```js\nconst data = await $.retry(async (attempt) => {\n  return await $.get(\'/api/data\');\n}, { attempts: 3, delay: 500, backoff: 2 });\n```',
+    insertText: 'retry(async (attempt) => {\n\t$1\n}, { attempts: ${2:3}, delay: ${3:1000} })',
+  },
+  {
+    name: 'timeout',
+    kind: 'Function',
+    detail: '(promise, ms, message?) → Promise<T>',
+    documentation:
+      'Race a promise against a timeout. Rejects with an Error if the timeout is reached first.\n\n' +
+      "```js\nconst data = await $.timeout(fetch('/api/slow'), 5000);\nconst data = await $.timeout(fetch('/api'), 3000, 'API timed out');\n```",
+    insertText: 'timeout(${1:promise}, ${2:5000})',
   },
 ];
 
@@ -810,7 +1058,8 @@ const collectionMethods = [
   { name: 'offset', kind: 'Method', detail: '() → { top, left, width, height }', documentation: 'Position relative to document.', insertText: 'offset()' },
   { name: 'position', kind: 'Method', detail: '() → { top, left }', documentation: 'Position relative to offset parent.', insertText: 'position()' },
   // Content
-  { name: 'html', kind: 'Method', detail: '() | (content) → string | this', documentation: 'Get or set innerHTML.', insertText: 'html($1)' },
+  { name: 'html', kind: 'Method', detail: '() | (content) → string | this', documentation: 'Get innerHTML, or set with **auto-morph**: diffs existing children via the morph engine (LIS keyed reconciliation, `isEqualNode()` bail-outs). Empty elements use raw `innerHTML` for fast first-paint.', insertText: 'html($1)' },
+  { name: 'morph', kind: 'Method', detail: '(content) → this', documentation: 'Always morph — run content through the diff engine regardless of whether the element already has children.', insertText: 'morph($1)' },
   { name: 'text', kind: 'Method', detail: '() | (content) → string | this', documentation: 'Get or set textContent.', insertText: 'text($1)' },
   { name: 'val', kind: 'Method', detail: '() | (value) → string | this', documentation: 'Get or set input value.', insertText: 'val($1)' },
   // DOM Manipulation
@@ -1071,6 +1320,15 @@ const zDirectives = [
       'When the list is re-rendered, `z-key` lets the morph engine match old and new elements by identity instead of position — preserving focus, animations, and local state.\n\n' +
       '```html\n<li z-for="item in items" z-key="{{item.id}}">\n  {{item.name}}\n</li>\n```',
     insertText: 'z-key="{{$1}}"',
+  },
+  {
+    name: 'z-skip',
+    detail: 'Opt Out of Diffing',
+    documentation:
+      'Tell the morph engine to leave this element (and its entire subtree) untouched during DOM reconciliation. ' +
+      'Useful for third-party widgets, canvas elements, or any DOM managed by external code.\n\n' +
+      '```html\n<!-- Chart.js manages this canvas -->\n<canvas z-skip></canvas>\n\n<!-- Third-party widget -->\n<div z-skip id="twitter-feed"></div>\n```',
+    insertText: 'z-skip',
   },
 ];
 

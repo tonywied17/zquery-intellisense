@@ -460,6 +460,13 @@
     ],
     "description": "Keyed reconciliation attribute for z-for loops — enables efficient DOM morphing by matching elements by identity."
   },
+  "z-skip": {
+    "prefix": "z-skip",
+    "body": [
+      "z-skip"
+    ],
+    "description": "Opt out of DOM diffing — the morph engine will leave this element and its subtree untouched. Use for third-party widgets, canvas, iframes."
+  },
   "zQuery Slot (default)": {
     "prefix": "zq-slot",
     "body": [
