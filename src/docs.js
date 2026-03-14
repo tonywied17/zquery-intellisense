@@ -370,6 +370,15 @@ const dollarMethods = [
     documentation: 'HTTP DELETE request.',
     insertText: "delete('${1:/api/endpoint}')",
   },
+  {
+    name: 'head',
+    kind: 'Function',
+    detail: '(url, opts?) → Promise<HttpResponse>',
+    documentation:
+      'HTTP HEAD request. Same as GET but returns only headers — no response body.\n\n' +
+      "```js\nconst { status, headers } = await $.head('/api/health');\n```",
+    insertText: "head('${1:/api/endpoint}')",
+  },
 
   // -- Utilities: Functions ------------------------------------------------
   {
@@ -546,7 +555,7 @@ const dollarMethods = [
     name: 'version',
     kind: 'Property',
     detail: 'string',
-    documentation: "Library version string (e.g. `'0.9.5'`).",
+    documentation: "Library version string (e.g. `'0.9.7'`).",
     insertText: 'version',
   },
   {
@@ -667,7 +676,7 @@ const dollarMethods = [
     name: 'libSize',
     kind: 'Property',
     detail: 'string',
-    documentation: "Minified library size string (e.g. `'~91 KB'`), injected at build time.",
+    documentation: "Minified library size string (e.g. `'~100 KB'`), injected at build time.",
     insertText: 'libSize',
   },
 
@@ -889,22 +898,58 @@ const httpMethods = [
     insertText: "configure({\n\tbaseURL: '${1}',\n\theaders: { $2 },\n\ttimeout: ${3:30000},\n})",
   },
   {
+    name: 'head',
+    kind: 'Function',
+    detail: '(url, opts?) → Promise<HttpResponse>',
+    documentation:
+      'HTTP HEAD request. Same as GET but returns only headers — no response body.\n\n' +
+      "```js\nconst { status, headers } = await $.http.head('/api/health');\n```",
+    insertText: "head('${1:/api/endpoint}')",
+  },
+  {
     name: 'onRequest',
     kind: 'Function',
-    detail: '(fn) → void',
+    detail: '(fn) → () => void',
     documentation:
-      'Add a request interceptor. Called before every request.\n\n' +
-      "```js\n$.http.onRequest(async (opts, url) => {\n  opts.headers['Authorization'] = 'Bearer ' + getToken();\n});\n```",
+      'Add a request interceptor. Called before every request. Returns an **unsubscribe** function.\n\n' +
+      "```js\nconst unsub = $.http.onRequest(async (opts, url) => {\n  opts.headers['Authorization'] = 'Bearer ' + getToken();\n});\nunsub(); // remove interceptor\n```",
     insertText: 'onRequest(async (fetchOpts, url) => {\n\t$1\n})',
   },
   {
     name: 'onResponse',
     kind: 'Function',
-    detail: '(fn) → void',
+    detail: '(fn) → () => void',
     documentation:
-      'Add a response interceptor. Called after every response.\n\n' +
-      '```js\n$.http.onResponse(async (result) => {\n  if (result.status === 401) await refreshToken();\n});\n```',
+      'Add a response interceptor. Called after every response. Returns an **unsubscribe** function.\n\n' +
+      "```js\nconst unsub = $.http.onResponse(async (result) => {\n  if (result.status === 401) await refreshToken();\n});\nunsub(); // remove interceptor\n```",
     insertText: 'onResponse(async (result) => {\n\t$1\n})',
+  },
+  {
+    name: 'clearInterceptors',
+    kind: 'Function',
+    detail: "(type?) → void",
+    documentation:
+      "Clear registered interceptors. Pass `'request'` or `'response'` to clear only that type, or omit the argument to clear both.\n\n" +
+      "```js\n$.http.clearInterceptors();            // clear all\n$.http.clearInterceptors('request');   // request only\n$.http.clearInterceptors('response');  // response only\n```",
+    insertText: "clearInterceptors(${1})",
+  },
+  {
+    name: 'all',
+    kind: 'Function',
+    detail: '(requests) → Promise<HttpResponse[]>',
+    documentation:
+      'Execute multiple HTTP requests in parallel. Wraps `Promise.all()`.\n\n' +
+      "```js\nconst [users, posts] = await $.http.all([\n  $.get('/api/users'),\n  $.get('/api/posts'),\n]);\n```",
+    insertText: "all([\n\t$1\n])",
+  },
+  {
+    name: 'getConfig',
+    kind: 'Function',
+    detail: '() → { baseURL, headers, timeout }',
+    documentation:
+      'Returns a read-only snapshot of the current HTTP client configuration.\n\n' +
+      '```js\nconst cfg = $.http.getConfig();\nconsole.log(cfg.baseURL, cfg.timeout);\n```',
+    insertText: 'getConfig()',
   },
   {
     name: 'createAbort',
@@ -1310,6 +1355,30 @@ const zDirectives = [
       'Boolean attribute modifier for `z-model`. Forces `Number()` conversion regardless of input type.\n\n' +
       '```html\n<input z-model="price" z-number>\n```',
     insertText: 'z-number',
+  },
+  {
+    name: 'z-debounce',
+    detail: 'Debounce z-model modifier',
+    documentation:
+      'Attribute modifier for `z-model`. Debounces state updates by the specified milliseconds (default 250 ms).\n\n' +
+      '```html\n<input z-model="search" z-debounce="300">\n<input z-model="query" z-debounce>  <!-- default 250ms -->\n```',
+    insertText: 'z-debounce="${1:300}"',
+  },
+  {
+    name: 'z-uppercase',
+    detail: 'Uppercase z-model modifier',
+    documentation:
+      'Boolean attribute modifier for `z-model`. Converts the input value to uppercase before writing to state.\n\n' +
+      '```html\n<input z-model="code" z-uppercase>\n```',
+    insertText: 'z-uppercase',
+  },
+  {
+    name: 'z-lowercase',
+    detail: 'Lowercase z-model modifier',
+    documentation:
+      'Boolean attribute modifier for `z-model`. Converts the input value to lowercase before writing to state.\n\n' +
+      '```html\n<input z-model="email" z-lowercase>\n```',
+    insertText: 'z-lowercase',
   },
   // -- Keyed Reconciliation ------------------------------------------------
   {

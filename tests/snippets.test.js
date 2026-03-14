@@ -108,6 +108,13 @@ describe('HTML snippets — content validation', () => {
     expect(prefixes).toContain('z-ref');
   });
 
+  it('contains z-model modifier snippets', () => {
+    const prefixes = entries.map(([, s]) => s.prefix);
+    expect(prefixes).toContain('z-model-debounce');
+    expect(prefixes).toContain('z-model-uppercase');
+    expect(prefixes).toContain('z-model-lowercase');
+  });
+
   it('contains @ event snippets', () => {
     const prefixes = entries.map(([, s]) => s.prefix);
     const hasEvent = prefixes.some((p) => p.startsWith('@') || p.startsWith('z-on'));
@@ -145,6 +152,19 @@ describe('JavaScript snippets — content validation', () => {
     expect(prefixes).toContain('zq-select');
     expect(prefixes).toContain('zq-component');
     expect(prefixes).toContain('zq-mount');
+  });
+
+  it('contains HTTP method snippets', () => {
+    const prefixes = entries.map(([, s]) => s.prefix);
+    expect(prefixes).toContain('zq-get');
+    expect(prefixes).toContain('zq-post');
+    expect(prefixes).toContain('zq-put');
+    expect(prefixes).toContain('zq-patch');
+    expect(prefixes).toContain('zq-delete');
+    expect(prefixes).toContain('zq-head');
+    expect(prefixes).toContain('zq-http-all');
+    expect(prefixes).toContain('zq-http-getconfig');
+    expect(prefixes).toContain('zq-http-clear-interceptors');
   });
 
   it('has significant number of snippets', () => {

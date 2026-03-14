@@ -1,6 +1,6 @@
 # zQuery for VS Code
 
-Full developer tooling for the [zQuery (zero-query)](https://github.com/tonywied17/zero-query) frontend library — autocomplete, hover documentation, go-to-definition, HTML directive support, syntax highlighting, and **217 code snippets**.
+Full developer tooling for the [zQuery (zero-query)](https://github.com/tonywied17/zero-query) frontend library — autocomplete, hover documentation, go-to-definition, HTML directive support, syntax highlighting, and **224 code snippets**.
 
 ---
 
@@ -19,10 +19,11 @@ Type `$.` or `zQuery.` anywhere in JavaScript or TypeScript to instantly see eve
 
 Hover over any `$` method call or HTML directive to see rich inline documentation with code examples.
 
-- `$`, `$.id`, `$.class`, `$.qs`, `$.qsa`, `$.name`, `$.all`, `$.component`, `$.mount`, `$.http.get`, `$.http.raw`, `$.storage.get`, `$.bus.on`, `$.fn`, `$.version`, `$.meta`, `$.onError`, `$.ZQueryError`, `$.ErrorCode`, `$.Signal`, `$.TrustedHTML`, `$.EventBus`, and more
+- `$`, `$.id`, `$.class`, `$.qs`, `$.qsa`, `$.name`, `$.all`, `$.component`, `$.mount`, `$.http.get`, `$.http.head`, `$.http.all`, `$.http.getConfig`, `$.http.clearInterceptors`, `$.http.raw`, `$.storage.get`, `$.bus.on`, `$.fn`, `$.version`, `$.meta`, `$.onError`, `$.ZQueryError`, `$.ErrorCode`, `$.Signal`, `$.TrustedHTML`, `$.EventBus`, and more
 - **New utilities** — `$.range`, `$.unique`, `$.chunk`, `$.groupBy`, `$.pick`, `$.omit`, `$.getPath`, `$.setPath`, `$.isEmpty`, `$.capitalize`, `$.truncate`, `$.clamp`, `$.memoize`, `$.retry`, `$.timeout`, `$.stripHtml`
 - **Structural directives** — `z-if`, `z-else-if`, `z-else`, `z-for`, `z-show`, `z-cloak`, `z-pre`, `z-skip`
 - **Data binding directives** — `z-bind` / `:attr`, `z-class`, `z-style`, `z-text`, `z-html`, `z-model`, `z-ref`
+- **z-model modifiers** — `z-lazy`, `z-trim`, `z-number`, `z-debounce`, `z-uppercase`, `z-lowercase`
 - **Event directives** — `@click`, `z-on:click`, `@submit.prevent`, and all event modifiers (`.prevent`, `.stop`, `.once`, `.self`, `.capture`, `.passive`, `.debounce.{ms}`, `.throttle.{ms}`)
 - Works across **JavaScript**, **TypeScript**, and **HTML** files
 
@@ -46,7 +47,7 @@ Injects TextMate grammar into HTML files for:
 
 ### Code Snippets
 
-**217 snippets** covering the entire zQuery API — type `zq-` to browse them all.
+**224 snippets** covering the entire zQuery API — type `zq-` to browse them all.
 
 ---
 
@@ -217,10 +218,14 @@ Injects TextMate grammar into HTML files for:
 | `zq-put` | HTTP PUT request |
 | `zq-patch` | HTTP PATCH request |
 | `zq-delete` | HTTP DELETE request |
+| `zq-head` | HTTP HEAD request — headers only, no body |
 | `zq-http-try` | HTTP request with error handling |
 | `zq-http-abort` | AbortController for request cancellation |
-| `zq-interceptor-req` | HTTP request interceptor |
-| `zq-interceptor-res` | HTTP response interceptor |
+| `zq-interceptor-req` | HTTP request interceptor (returns unsubscribe) |
+| `zq-interceptor-res` | HTTP response interceptor (returns unsubscribe) |
+| `zq-http-clear-interceptors` | Clear HTTP interceptors — `'request'`, `'response'`, or both |
+| `zq-http-all` | Execute multiple requests in parallel (`Promise.all`) |
+| `zq-http-getconfig` | Get current HTTP client configuration |
 
 ### Utilities
 
@@ -326,12 +331,15 @@ Injects TextMate grammar into HTML files for:
 | `z-html` | HTML content binding — sets `innerHTML` (trusted content) |
 | `z-model` | Two-way data binding |
 | `z-model-nested` | Nested state binding (`parent.child`) |
-| `z-model-mods` | Binding with modifier (`z-lazy`, `z-trim`, `z-number`) |
+| `z-model-mods` | Binding with modifier (`z-lazy`, `z-trim`, `z-number`, `z-debounce`, `z-uppercase`, `z-lowercase`) |
 | `z-model-checkbox` | Checkbox with boolean binding |
 | `z-model-radio` | Radio button group |
 | `z-model-number` | Number input |
 | `z-model-select` | Select dropdown |
 | `z-model-textarea` | Textarea with optional lazy modifier |
+| `z-model-debounce` | Input with debounce modifier — delays state updates |
+| `z-model-uppercase` | Input with uppercase modifier — converts to uppercase |
+| `z-model-lowercase` | Input with lowercase modifier — converts to lowercase |
 | `z-ref` | Element reference (`this.refs.name`) |
 | `z-link` | SPA navigation link |
 | `z-link-params` | SPA link with dynamic `:param` interpolation |

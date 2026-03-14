@@ -613,11 +613,18 @@
     ],
     "description": "HTTP DELETE request."
   },
+  "zQuery HTTP HEAD": {
+    "prefix": "zq-head",
+    "body": [
+      "const { status, headers } = await $.head('${1:/api/endpoint}');"
+    ],
+    "description": "HTTP HEAD request — returns only headers, no response body."
+  },
   "zQuery HTTP (try/catch)": {
     "prefix": "zq-http-try",
     "body": [
       "try {",
-      "\tconst { data } = await $.${1|get,post,put,patch,delete|}('${2:/api/endpoint}'${3});",
+      "\tconst { data } = await $.${1|get,post,put,patch,delete,head|}('${2:/api/endpoint}'${3});",
       "\t${4:console.log(data);}",
       "} catch (err) {",
       "\tconsole.error(err.response?.status, err.response?.data);",
@@ -637,20 +644,44 @@
   "zQuery Interceptor (Request)": {
     "prefix": "zq-interceptor-req",
     "body": [
-      "$.http.onRequest(async (opts, url) => {",
+      "const unsub = $.http.onRequest(async (opts, url) => {",
       "\t${1:opts.headers['Authorization'] = 'Bearer ' + getToken();}",
       "});"
     ],
-    "description": "Add an HTTP request interceptor."
+    "description": "Add an HTTP request interceptor. Returns an unsubscribe function."
   },
   "zQuery Interceptor (Response)": {
     "prefix": "zq-interceptor-res",
     "body": [
-      "$.http.onResponse(async (result) => {",
+      "const unsub = $.http.onResponse(async (result) => {",
       "\t${1:if (result.status === 401) { /* handle */ \\}}",
       "});"
     ],
-    "description": "Add an HTTP response interceptor."
+    "description": "Add an HTTP response interceptor. Returns an unsubscribe function."
+  },
+  "zQuery HTTP Clear Interceptors": {
+    "prefix": "zq-http-clear-interceptors",
+    "body": [
+      "$.http.clearInterceptors(${1});"
+    ],
+    "description": "Clear HTTP interceptors — 'request', 'response', or both (no arg)."
+  },
+  "zQuery HTTP All": {
+    "prefix": "zq-http-all",
+    "body": [
+      "const [${1:res1}, ${2:res2}] = await $.http.all([",
+      "\t$.get('${3:/api/endpoint1}'),",
+      "\t$.get('${4:/api/endpoint2}'),",
+      "]);"
+    ],
+    "description": "Execute multiple HTTP requests in parallel (Promise.all)."
+  },
+  "zQuery HTTP Get Config": {
+    "prefix": "zq-http-getconfig",
+    "body": [
+      "const ${1:cfg} = $.http.getConfig();"
+    ],
+    "description": "Get current HTTP client configuration (baseURL, headers, timeout)."
   },
 
   "_comment_utilities": "──── Utilities ────",
