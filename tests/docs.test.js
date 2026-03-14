@@ -46,6 +46,7 @@ describe('docs data integrity', () => {
     expect(names).toContain('store');
     expect(names).toContain('reactive');
     expect(names).toContain('signal');
+    expect(names).toContain('head');
   });
 
   it('httpMethods contains REST methods', () => {
@@ -54,6 +55,21 @@ describe('docs data integrity', () => {
     expect(names).toContain('post');
     expect(names).toContain('put');
     expect(names).toContain('delete');
+    expect(names).toContain('head');
+  });
+
+  it('httpMethods contains new utility methods', () => {
+    const names = docs.httpMethods.map((e) => e.name);
+    expect(names).toContain('getConfig');
+    expect(names).toContain('clearInterceptors');
+    expect(names).toContain('all');
+  });
+
+  it('httpMethods interceptors return unsubscribe', () => {
+    const onReq = docs.httpMethods.find((e) => e.name === 'onRequest');
+    const onRes = docs.httpMethods.find((e) => e.name === 'onResponse');
+    expect(onReq.detail).toContain('() => void');
+    expect(onRes.detail).toContain('() => void');
   });
 
   it('busMethods contains core event bus methods', () => {
@@ -82,6 +98,16 @@ describe('docs data integrity', () => {
     expect(names).toContain('z-ref');
     expect(names).toContain('z-class');
     expect(names).toContain('z-style');
+  });
+
+  it('zDirectives contains z-model modifiers', () => {
+    const names = docs.zDirectives.map((e) => e.name);
+    expect(names).toContain('z-lazy');
+    expect(names).toContain('z-trim');
+    expect(names).toContain('z-number');
+    expect(names).toContain('z-debounce');
+    expect(names).toContain('z-uppercase');
+    expect(names).toContain('z-lowercase');
   });
 
   it('eventDirectives contains common events', () => {

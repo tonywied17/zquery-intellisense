@@ -134,9 +134,9 @@
   "z-model + Modifiers": {
     "prefix": "z-model-mods",
     "body": [
-      "z-model=\"${1:stateKey}\" ${2|z-lazy,z-trim,z-number|}"
+      "z-model=\"${1:stateKey}\" ${2|z-lazy,z-trim,z-number,z-debounce,z-uppercase,z-lowercase|}"
     ],
-    "description": "zQuery z-model with a modifier (z-lazy, z-trim, z-number)."
+    "description": "zQuery z-model with a modifier (z-lazy, z-trim, z-number, z-debounce, z-uppercase, z-lowercase)."
   },
   "z-model (Checkbox)": {
     "prefix": "z-model-checkbox",
@@ -180,6 +180,27 @@
       "<textarea z-model=\"${1:content}\" ${2:z-lazy} placeholder=\"${3:Enter text...}\"></textarea>"
     ],
     "description": "zQuery z-model textarea with optional lazy modifier."
+  },
+  "z-model (Debounce)": {
+    "prefix": "z-model-debounce",
+    "body": [
+      "<input z-model=\"${1:search}\" z-debounce=\"${2:300}\" placeholder=\"${3:Search...}\">"
+    ],
+    "description": "zQuery z-model with debounce modifier — delays state updates by specified ms (default 250)."
+  },
+  "z-model (Uppercase)": {
+    "prefix": "z-model-uppercase",
+    "body": [
+      "<input z-model=\"${1:code}\" z-uppercase>"
+    ],
+    "description": "zQuery z-model with uppercase modifier — converts input to uppercase."
+  },
+  "z-model (Lowercase)": {
+    "prefix": "z-model-lowercase",
+    "body": [
+      "<input z-model=\"${1:email}\" z-lowercase>"
+    ],
+    "description": "zQuery z-model with lowercase modifier — converts input to lowercase."
   },
   "z-ref Attribute": {
     "prefix": "z-ref",
